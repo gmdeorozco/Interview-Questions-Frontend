@@ -1,5 +1,6 @@
 package com.learning.javainterviewquestions.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -17,14 +18,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QuestionEntity {
+public class QuestionEntity implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    Long id;
+    @GeneratedValue
+    private Long id;
 
-    String question;
-    String answer;
+    private String question;
+    private String answer;
 
-    @OneToMany
-    List<TagEntity> tags;
 }

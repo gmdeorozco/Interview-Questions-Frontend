@@ -34,6 +34,25 @@ public class QuestionModelAssembler extends
                 .findById( entity.getId() )
         ).withSelfRel());
 
+        questionModel.add( linkTo( 
+            methodOn(QuestionController.class)
+                .deleteById( entity.getId())
+         ).withRel("delete"));
+
+         questionModel.add( linkTo(
+            methodOn(QuestionController.class)
+                .findAll()
+         ).withRel("findAll"));
+
+         questionModel.add( linkTo(
+            methodOn(QuestionController.class)
+                .update( entity )
+         ).withRel("update"));
+
+        questionModel.setId( entity.getId() );
+        questionModel.setQuestion( entity.getQuestion());
+        questionModel.setAnswer( entity.getAnswer());
+
         return questionModel;
     }
     
