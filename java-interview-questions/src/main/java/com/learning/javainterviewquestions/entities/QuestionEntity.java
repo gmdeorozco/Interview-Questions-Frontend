@@ -26,5 +26,6 @@ public class QuestionEntity implements Serializable {
 
     private String question;
     private String answer;
+    private String topic;
 
 }

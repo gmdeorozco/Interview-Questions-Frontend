@@ -18,6 +18,7 @@ public class QuestionModel extends RepresentationModel <QuestionModel> {
     private Long id;
     private String question;
     private String answer;
+    private String topic;
     
     
 }

@@ -49,9 +49,15 @@ public class QuestionModelAssembler extends
                 .update( entity )
          ).withRel("update"));
 
+         questionModel.add( linkTo(
+            methodOn(QuestionController.class)
+                .findByTopic( entity.getTopic())
+         ).withRel("sameTopic"));
+
         questionModel.setId( entity.getId() );
         questionModel.setQuestion( entity.getQuestion());
         questionModel.setAnswer( entity.getAnswer());
+        questionModel.setTopic( entity.getTopic());
 
         return questionModel;
     }

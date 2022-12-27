@@ -46,4 +46,8 @@ public class QuestionService {
         return (List<QuestionEntity>) questionRepository.saveAll( questionEntities );
     }
 
+    public List<QuestionEntity> findByTopic( String topic ) {
+        return questionRepository.findByTopic(topic);
+    }
+
 }

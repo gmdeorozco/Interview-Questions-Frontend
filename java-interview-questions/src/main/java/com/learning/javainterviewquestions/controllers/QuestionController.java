@@ -83,4 +83,14 @@ public class QuestionController {
         );
     }
 
+    @GetMapping("question/topic/{topic}")
+    public ResponseEntity<CollectionModel<QuestionModel>> findByTopic( @PathVariable(value="topic") String topic) {
+        List<QuestionEntity> questionEntities = questionService.findByTopic( topic );
+        
+        return new ResponseEntity<>(
+            questionModelAssembler.toCollectionModel(questionEntities),
+            HttpStatus.OK
+        );
+    }
+
 }
