@@ -1,8 +1,6 @@
-# --- name of app goes here ---
+# --- Interview Questions for Java and More ---
 
 # TECHNOLOGIES APPLIED:
-
-# TECHNOLOGIES TO BE APPLIED
 
 - Java / Maven built project
 - JPA / Hibernate for DB persistency.
@@ -10,6 +8,10 @@
 - Spring Web for Restful services **
 - Lombok ** (check if applied in all use cases)
 - HATEOAS for improving Restful Services / Pagination
+
+# TECHNOLOGIES TO BE APPLIED
+
+- Basic React CRUD Client
 - Spring Security for
     ->  Authentication
     ->  Authorization
