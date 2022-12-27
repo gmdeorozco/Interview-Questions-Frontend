@@ -20,4 +20,8 @@ public class QuestionService {
         return questionRepository.findById(id);
     }
 
+    public QuestionEntity save(QuestionEntity questionEntity) {
+        return questionRepository.save( questionEntity );
+    }
+
 }

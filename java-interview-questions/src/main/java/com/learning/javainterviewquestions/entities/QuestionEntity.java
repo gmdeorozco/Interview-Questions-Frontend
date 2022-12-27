@@ -26,5 +26,5 @@ public class QuestionEntity {
     String answer;
 
     @OneToMany
-    List<Tag> tags;
+    List<TagEntity> tags;
 }

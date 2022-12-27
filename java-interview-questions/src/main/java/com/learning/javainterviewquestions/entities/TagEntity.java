@@ -18,7 +18,7 @@ import lombok.Data;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Tag {
+public class TagEntity {
     @Id
     Long id;
 
