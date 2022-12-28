@@ -6,10 +6,11 @@ import Modal from 'react-bootstrap/Modal';
 import React, { useState } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { BsPlusLg } from 'react-icons/bs'
-import Table from 'react-bootstrap/Table';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import TableOfQuestions from './components/TableOfQuestions';
 
 function App() {
   const [show, setShow] = useState(false);
@@ -50,34 +51,9 @@ function App() {
             </Button> 
           </Col>
         </Row>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>id</th>
-                <th>Question</th>
-                <th>Answer</th>
-                <th>Topic</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>@mdo</td>
-              </tr>
-              
-            </tbody>
-          </Table>
+          <TableOfQuestions
+            topic="Java"
+          />
         <Row>
 
         </Row>
