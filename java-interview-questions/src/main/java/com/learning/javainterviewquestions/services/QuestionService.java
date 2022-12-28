@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,10 @@ public class QuestionService {
 
     public List<QuestionEntity> findByTopic( String topic ) {
         return questionRepository.findByTopic(topic);
+    }
+
+    public Page <QuestionEntity> findAll(Pageable pageable) {
+        return questionRepository.findAll(pageable);
     }
 
 }
