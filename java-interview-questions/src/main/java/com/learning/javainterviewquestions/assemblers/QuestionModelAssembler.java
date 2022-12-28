@@ -25,7 +25,7 @@ public class QuestionModelAssembler extends
 
 
     @Override
-    public QuestionModel toModel(QuestionEntity entity) {
+    public QuestionModel toModel(QuestionEntity  entity) {
 
         QuestionModel questionModel = instantiateModel(entity);
 
@@ -49,10 +49,7 @@ public class QuestionModelAssembler extends
                 .update( entity )
          ).withRel("update"));
 
-         questionModel.add( linkTo(
-            methodOn(QuestionController.class)
-                .findByTopic( entity.getTopic())
-         ).withRel("sameTopic"));
+       
 
         questionModel.setId( entity.getId() );
         questionModel.setQuestion( entity.getQuestion());

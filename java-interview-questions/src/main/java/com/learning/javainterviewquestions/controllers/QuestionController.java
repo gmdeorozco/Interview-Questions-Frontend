@@ -86,7 +86,7 @@ public class QuestionController {
     }
 
     @GetMapping("question/all")
-    public ResponseEntity<CollectionModel<QuestionModel>> findAll( ) {
+    public ResponseEntity<CollectionModel<QuestionModel>> findAll() {
         List<QuestionEntity> questionEntities = questionService.findAll();
         
         return new ResponseEntity<>(
@@ -111,13 +111,17 @@ public class QuestionController {
     
 
     @GetMapping("question/topic/{topic}")
-    public ResponseEntity<CollectionModel<QuestionModel>> findByTopic( @PathVariable(value="topic") String topic) {
-        List<QuestionEntity> questionEntities = questionService.findByTopic( topic );
+    public ResponseEntity<CollectionModel<QuestionModel>> findByTopic( @PathVariable(value="topic") String topic,
+    @RequestParam(defaultValue = "0")int page
+    , @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<QuestionEntity> questionEntities = questionService.findByTopic( topic, pageable );
         
-        return new ResponseEntity<>(
-            questionModelAssembler.toCollectionModel(questionEntities),
-            HttpStatus.OK
-        );
+        return new ResponseEntity<>
+            (pagedResourcesAssembler.toModel(questionEntities
+                ,questionModelAssembler), HttpStatus.OK);
     }
 
 }

@@ -28,6 +28,7 @@ public class QuestionEntity implements Serializable {
     private String question;
 
     @Column( length = 600 )
+    
     private String answer;
     private String topic;
 
