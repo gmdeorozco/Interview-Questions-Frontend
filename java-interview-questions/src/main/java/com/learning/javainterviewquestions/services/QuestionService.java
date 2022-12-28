@@ -48,11 +48,11 @@ public class QuestionService {
         return (List<QuestionEntity>) questionRepository.saveAll( questionEntities );
     }
 
-    public List<QuestionEntity> findByTopic( String topic ) {
-        return questionRepository.findByTopic(topic);
+    public Page<QuestionEntity> findByTopic( String topic, Pageable pageable) {
+        return questionRepository.findByTopic(topic, pageable);
     }
 
-    public Page <QuestionEntity> findAll(Pageable pageable) {
+    public Page <QuestionEntity> findAll( Pageable pageable ) {
         return questionRepository.findAll(pageable);
     }
 
