@@ -5,54 +5,97 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import React, { useState } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { BsPlusLg } from 'react-icons/bs'
-
+import { BsPlusLg } from 'react-icons/bs';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import TableOfQuestions from './components/TableOfQuestions';
+import { useEffect } from 'react';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+
 
 function App() {
-  const [show, setShow] = useState(false);
+  
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showViewer, setShowViewer] = useState(false);
+
   const [ question, setQuestion ] = useState();
   const [ answer, setAnswer ] = useState();
-  const [ topic, setTopic ] = useState();
+  const [ topic, setTopic ] = useState("Java");
+  const [dataOfQuestions, setDataOfQuestions ] = useState({});
+  const [isLoadingQuestionsData, setLoadingQuestionsData ] = useState(true);
+
+
+    // first data grab
+  useEffect(() => {
+    getDataOfQuestions();
+  }, [ topic ]);
+
+  const getDataOfQuestions = () => {
+    fetch("https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/topic/"+topic) // your url may look different
+      .then(resp => resp.json())
+      .then(data => { setDataOfQuestions ( data );  setLoadingQuestionsData( false ); }) // set data to state
+      console.log("loaded data")
+  }
 
   const submitNewQuestion = () => {
-    setShow(false);
+
+    setShowCreateModal(false);
     let questionEntity = {
       question : question,
       answer : answer,
       topic : topic
     };
-    console.log( questionEntity );
+   
 
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify( questionEntity )
     };
+
     fetch('https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/create'
       , requestOptions)
       .then(response => response.json())
-      .then(data => console.log( data ));
+      .then(data => getDataOfQuestions() );
+
+      setQuestion("");
+      setAnswer("");
+      setTopic("");
   } 
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+  const handleShowCreateModal = () => setShowCreateModal(true);
+  const handleCloseCreateModal = () => setShowCreateModal(false);
+
+  const handleShowViewer = () => setShowViewer(true);
+  const handleCloseViewer = () => setShowViewer(false);
 
   return (
     <>
       <Container>
         <Row>
           <Col>
-            <Button variant="primary" onClick={ handleShow }>
+            <Button variant="primary" onClick={ handleShowCreateModal } className="mb-3">
               <BsPlusLg/> 
             </Button> 
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="basic-addon1"> Topic: </InputGroup.Text>
+              <Form.Control
+                placeholder="Topic"
+                aria-label="Topic"
+                aria-describedby="basic-addon1"
+                onChange={ ( e ) => setTopic( e.target.value ) } 
+              />
+            </InputGroup>
           </Col>
         </Row>
           <TableOfQuestions
             topic="Java"
+            dataOfQuestions = { dataOfQuestions }
+            isLoadingQuestionsData = { isLoadingQuestionsData }
+            handleShowViewer = { handleShowViewer }
+            handleCloseViewer = { handleCloseViewer }
+
           />
         <Row>
 
@@ -60,8 +103,17 @@ function App() {
       </Container>
 
       
+      <Offcanvas show={showViewer} onHide={handleCloseViewer} placement = 'end'>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          Some text as placeholder. In real life you can have the elements you
+          have chosen. Like, text, images, lists, etc.
+        </Offcanvas.Body>
+      </Offcanvas>
 
-      <Modal show={ show } onHide={ handleClose }>
+      <Modal show={ showCreateModal } onHide={ handleCloseCreateModal }>
         <Modal.Header closeButton>
           <Modal.Title> New Interview Question </Modal.Title>
         </Modal.Header>
@@ -104,7 +156,7 @@ function App() {
 
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={ handleCloseCreateModal }>
             Close
           </Button>
           <Button variant="primary" onClick={ submitNewQuestion }>

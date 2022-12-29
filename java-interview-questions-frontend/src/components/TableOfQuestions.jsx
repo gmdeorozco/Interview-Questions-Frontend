@@ -1,23 +1,15 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { BsPencil } from 'react-icons/bs'
+import { AiOutlineDelete } from 'react-icons/ai'
+
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 
 function TableOfQuestions( props ){
 
     console.log( "carga tabla" )
-    const [dataOfQuestions, setDataOfQuestions ] = useState({});
-    const [isLoading, setLoading] = useState(true);
+    
 
-
-    // first data grab
-  useEffect(() => {
-    fetch("https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/topic/" + props.topic) // your url may look different
-      .then(resp => resp.json())
-      .then(data => { setDataOfQuestions (data);  setLoading(false); }) // set data to state
-  }, []);
-
-
-    if (isLoading) {
+    if ( props.isLoadingQuestionsData ) {
         return (
         <div style={{
           display: "flex",
@@ -26,6 +18,18 @@ function TableOfQuestions( props ){
           justifyContent: "center",
           height: "100vh",
         }}>Loading the data {console.log("loading state")}</div>
+      );
+      }
+
+      if ( props.dataOfQuestions.page.totalElements === 0) {
+        return (
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+        }}>No records found {console.log("no records found")}</div>
       );
       }
 
@@ -41,13 +45,24 @@ function TableOfQuestions( props ){
               </tr>
             </thead>
             <tbody>
-             { dataOfQuestions._embedded.questionModelList.map(
+             { props.dataOfQuestions._embedded.questionModelList.map(
                 (question,index) => (
                 <tr key={index}>
                     <td> {question.id} </td> 
                     <td> {question.question} </td> 
                     <td> {question.answer} </td> 
                     <td> {question.topic} </td> 
+                    <td> 
+                      <Button variant="secondary" onClick={ props.handleShowViewer} className="me-2">
+                        <BsPencil/>
+                      </Button>
+
+                      <Button variant="secondary" onClick={ props.handleShowViewer} className="me-2">
+                        <AiOutlineDelete />
+                      </Button>
+
+                      
+                    </td>
                 
                 </tr>
                 ))}
