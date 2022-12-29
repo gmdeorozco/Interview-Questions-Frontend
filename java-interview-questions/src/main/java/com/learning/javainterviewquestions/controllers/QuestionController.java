@@ -1,6 +1,7 @@
 package com.learning.javainterviewquestions.controllers;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -115,13 +116,21 @@ public class QuestionController {
     @RequestParam(defaultValue = "0")int page
     , @RequestParam(defaultValue = "10") int size) {
 
+
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<QuestionEntity> questionEntities = questionService.findByTopic( topic, pageable );
+        Page<QuestionEntity> questionEntities = (topic!=null && topic!="all" && topic!="") ? 
+            questionService.findByTopic( topic, pageable )
+            : questionService.findAll(pageable);
         
         return new ResponseEntity<>
             (pagedResourcesAssembler.toModel(questionEntities
                 ,questionModelAssembler), HttpStatus.OK);
+    }
+
+    @GetMapping("question/topics")
+    public Set<String> getAllTopics(){
+        return questionService.getAllTopics();
     }
 
 }

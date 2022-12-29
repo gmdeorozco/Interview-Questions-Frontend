@@ -11,19 +11,21 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import TableOfQuestions from './components/TableOfQuestions';
 import { useEffect } from 'react';
-import Offcanvas from 'react-bootstrap/Offcanvas';
+import AvailableTopicsButtons from './components/AvailableTopicsButtons';
 
 
 function App() {
   
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [showViewer, setShowViewer] = useState(false);
 
   const [ question, setQuestion ] = useState();
   const [ answer, setAnswer ] = useState();
   const [ topic, setTopic ] = useState("Java");
   const [dataOfQuestions, setDataOfQuestions ] = useState({});
   const [isLoadingQuestionsData, setLoadingQuestionsData ] = useState(true);
+  const [isLoadingAvailableTopics, setLoadingAvailableTopics ] = useState(true);
+
+  const [availableTopics, setAvailableTopics] = useState({})
 
 
     // first data grab
@@ -31,11 +33,22 @@ function App() {
     getDataOfQuestions();
   }, [ topic ]);
 
+  useEffect(() => {
+    getAvailableTopics();
+  }, []);
+
   const getDataOfQuestions = () => {
     fetch("https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/topic/"+topic) // your url may look different
       .then(resp => resp.json())
       .then(data => { setDataOfQuestions ( data );  setLoadingQuestionsData( false ); }) // set data to state
-      console.log("loaded data")
+      console.log("loaded data availableTopics")
+  }
+
+  const getAvailableTopics = () =>{
+    fetch("https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/topics")
+    .then(resp => resp.json())
+    .then(data => { setAvailableTopics ( data ); setLoadingAvailableTopics(false)}) // set data to state
+    
   }
 
   const submitNewQuestion = () => {
@@ -67,51 +80,56 @@ function App() {
   const handleShowCreateModal = () => setShowCreateModal(true);
   const handleCloseCreateModal = () => setShowCreateModal(false);
 
-  const handleShowViewer = () => setShowViewer(true);
-  const handleCloseViewer = () => setShowViewer(false);
+
 
   return (
     <>
-      <Container>
+      <Container lg="6" >
         <Row>
-          <Col>
-            <Button variant="primary" onClick={ handleShowCreateModal } className="mb-3">
+          <Col> <h1>Interview Questions</h1> </Col>
+        </Row>
+        <Row >
+          <Col lg="1">
+            <Button variant="primary" onClick={ handleShowCreateModal } className="mb-3 mt-3">
               <BsPlusLg/> 
-            </Button> 
-            <InputGroup className="mb-3">
+            </Button>
+          </Col> 
+          <Col>
+            <InputGroup className="mb-3 mt-3">
               <InputGroup.Text id="basic-addon1"> Topic: </InputGroup.Text>
               <Form.Control
                 placeholder="Topic"
                 aria-label="Topic"
                 aria-describedby="basic-addon1"
+                value={ topic }
                 onChange={ ( e ) => setTopic( e.target.value ) } 
               />
             </InputGroup>
           </Col>
         </Row>
-          <TableOfQuestions
-            topic="Java"
-            dataOfQuestions = { dataOfQuestions }
-            isLoadingQuestionsData = { isLoadingQuestionsData }
-            handleShowViewer = { handleShowViewer }
-            handleCloseViewer = { handleCloseViewer }
-
-          />
         <Row>
-
+          <Col>
+            <AvailableTopicsButtons
+              availableTopics = { availableTopics }
+              isLoadingAvailableTopics = { isLoadingAvailableTopics }
+              setTopic = { setTopic }
+             
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <TableOfQuestions
+              topic="Java"
+              dataOfQuestions = { dataOfQuestions }
+              isLoadingQuestionsData = { isLoadingQuestionsData }
+              getDataOfQuestions = { getDataOfQuestions }
+            />
+          </Col>
         </Row>
       </Container>
 
-      
-      <Offcanvas show={showViewer} onHide={handleCloseViewer} placement = 'end'>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          Some text as placeholder. In real life you can have the elements you
-          have chosen. Like, text, images, lists, etc.
-        </Offcanvas.Body>
-      </Offcanvas>
+     
 
       <Modal show={ showCreateModal } onHide={ handleCloseCreateModal }>
         <Modal.Header closeButton>
