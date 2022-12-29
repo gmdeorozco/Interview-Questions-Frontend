@@ -5,87 +5,133 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import React, { useState } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { BsPlusLg } from 'react-icons/bs'
-import Table from 'react-bootstrap/Table';
+import { BsPlusLg } from 'react-icons/bs';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import TableOfQuestions from './components/TableOfQuestions';
+import { useEffect } from 'react';
+import AvailableTopicsButtons from './components/AvailableTopicsButtons';
+
 
 function App() {
-  const [show, setShow] = useState(false);
+  
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
   const [ question, setQuestion ] = useState();
   const [ answer, setAnswer ] = useState();
-  const [ topic, setTopic ] = useState();
+  const [ topic, setTopic ] = useState("Java");
+  const [dataOfQuestions, setDataOfQuestions ] = useState({});
+  const [isLoadingQuestionsData, setLoadingQuestionsData ] = useState(true);
+  const [isLoadingAvailableTopics, setLoadingAvailableTopics ] = useState(true);
+
+  const [availableTopics, setAvailableTopics] = useState({})
+
+
+    // first data grab
+  useEffect(() => {
+    getDataOfQuestions();
+  }, [ topic ]);
+
+  useEffect(() => {
+    getAvailableTopics();
+  }, []);
+
+  const getDataOfQuestions = () => {
+    fetch("https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/topic/"+topic) // your url may look different
+      .then(resp => resp.json())
+      .then(data => { setDataOfQuestions ( data );  setLoadingQuestionsData( false ); }) // set data to state
+      console.log("loaded data availableTopics")
+  }
+
+  const getAvailableTopics = () =>{
+    fetch("https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/topics")
+    .then(resp => resp.json())
+    .then(data => { setAvailableTopics ( data ); setLoadingAvailableTopics(false)}) // set data to state
+    
+  }
 
   const submitNewQuestion = () => {
-    setShow(false);
+
+    setShowCreateModal(false);
     let questionEntity = {
       question : question,
       answer : answer,
       topic : topic
     };
-    console.log( questionEntity );
+   
 
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify( questionEntity )
     };
+
     fetch('https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/create'
       , requestOptions)
       .then(response => response.json())
-      .then(data => console.log( data ));
+      .then(data => getDataOfQuestions() );
+
+      setQuestion("");
+      setAnswer("");
+      setTopic("");
   } 
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+  const handleShowCreateModal = () => setShowCreateModal(true);
+  const handleCloseCreateModal = () => setShowCreateModal(false);
+
+
 
   return (
     <>
-      <Container>
+      <Container lg="6" >
         <Row>
-          <Col>
-            <Button variant="primary" onClick={ handleShow }>
+          <Col> <h1>Interview Questions</h1> </Col>
+        </Row>
+        <Row >
+          <Col lg="1">
+            <Button variant="primary" onClick={ handleShowCreateModal } className="mb-3 mt-3">
               <BsPlusLg/> 
-            </Button> 
+            </Button>
+          </Col> 
+          <Col>
+            <InputGroup className="mb-3 mt-3">
+              <InputGroup.Text id="basic-addon1"> Topic: </InputGroup.Text>
+              <Form.Control
+                placeholder="Topic"
+                aria-label="Topic"
+                aria-describedby="basic-addon1"
+                value={ topic }
+                onChange={ ( e ) => setTopic( e.target.value ) } 
+              />
+            </InputGroup>
           </Col>
         </Row>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>id</th>
-                <th>Question</th>
-                <th>Answer</th>
-                <th>Topic</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>@mdo</td>
-              </tr>
-              
-            </tbody>
-          </Table>
         <Row>
-
+          <Col>
+            <AvailableTopicsButtons
+              availableTopics = { availableTopics }
+              isLoadingAvailableTopics = { isLoadingAvailableTopics }
+              setTopic = { setTopic }
+             
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <TableOfQuestions
+              topic="Java"
+              dataOfQuestions = { dataOfQuestions }
+              isLoadingQuestionsData = { isLoadingQuestionsData }
+              getDataOfQuestions = { getDataOfQuestions }
+            />
+          </Col>
         </Row>
       </Container>
 
-      
+     
 
-      <Modal show={ show } onHide={ handleClose }>
+      <Modal show={ showCreateModal } onHide={ handleCloseCreateModal }>
         <Modal.Header closeButton>
           <Modal.Title> New Interview Question </Modal.Title>
         </Modal.Header>
@@ -128,7 +174,7 @@ function App() {
 
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={ handleCloseCreateModal }>
             Close
           </Button>
           <Button variant="primary" onClick={ submitNewQuestion }>
