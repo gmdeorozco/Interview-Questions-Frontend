@@ -1,0 +1,21 @@
+version: "5.0"
+services:
+  employee-jdbc:
+    image: questions
+    ports:
+      - "8080:8080"
+    networks:
+      - questions-mysql
+    depends_on:
+      - mysqldb
+ 
+  mysqldb:
+    image: mysql:8
+    networks:
+      - questions-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=bootdb  
+
+networks:
+  questions-mysql: 

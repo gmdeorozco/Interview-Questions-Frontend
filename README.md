@@ -8,10 +8,11 @@
 - Spring Web for Restful services **
 - Lombok ** (check if applied in all use cases)
 - HATEOAS for improving Restful Services / Pagination
+- Basic React CRUD Client
 
 # TECHNOLOGIES TO BE APPLIED
 
-- Basic React CRUD Client
+
 - Spring Security for
     ->  Authentication
     ->  Authorization
