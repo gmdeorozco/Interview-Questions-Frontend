@@ -27,6 +27,7 @@ function App() {
 
   const [availableTopics, setAvailableTopics] = useState({})
 
+  const server = 'https://8080-gmdeorozco-javaintervie-f32uhftkizu.ws-us80.gitpod.io/api/v1'
 
     // first data grab
   useEffect(() => {
@@ -38,14 +39,14 @@ function App() {
   }, []);
 
   const getDataOfQuestions = () => {
-    fetch("https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/topic/"+topic) // your url may look different
+    fetch( server + "/question/topic/"+topic) // your url may look different
       .then(resp => resp.json())
       .then(data => { setDataOfQuestions ( data );  setLoadingQuestionsData( false ); }) // set data to state
       console.log("loaded data availableTopics")
   }
 
   const getAvailableTopics = () =>{
-    fetch("https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/topics")
+    fetch( server + "/question/topics")
     .then(resp => resp.json())
     .then(data => { setAvailableTopics ( data ); setLoadingAvailableTopics(false)}) // set data to state
     
@@ -67,10 +68,10 @@ function App() {
       body: JSON.stringify( questionEntity )
     };
 
-    fetch('https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/create'
+    fetch( server + '/question/create'
       , requestOptions)
       .then(response => response.json())
-      .then(data => getDataOfQuestions() );
+      .then(data => { getDataOfQuestions();  getAvailableTopics()} );
 
       setQuestion("");
       setAnswer("");
@@ -124,6 +125,8 @@ function App() {
               dataOfQuestions = { dataOfQuestions }
               isLoadingQuestionsData = { isLoadingQuestionsData }
               getDataOfQuestions = { getDataOfQuestions }
+              getAvailableTopics = { getAvailableTopics }
+              server = { server }
             />
           </Col>
         </Row>

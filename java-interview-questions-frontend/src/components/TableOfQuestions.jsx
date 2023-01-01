@@ -29,7 +29,7 @@ function TableOfQuestions( props ){
       method: 'DELETE'
     }
      
-    fetch("https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/"+delitingElement+"/delete"
+    fetch( props.server + "/question/"+delitingElement+"/delete"
       , requestOptions)
       .then(response => response.json())
       .then(data => props.getDataOfQuestions() );
@@ -56,10 +56,10 @@ function TableOfQuestions( props ){
       body: JSON.stringify( questionEntity )
     };
 
-    fetch('https://8080-gmdeorozco-javaintervie-wwjrupxk0e6.ws-us80.gitpod.io/api/v1/question/update'
+    fetch(props.server+'/question/update'
       , requestOptions)
       .then(response => response.json())
-      .then(data => props.getDataOfQuestions() );
+      .then(data => { props.getDataOfQuestions(); props.getAvailableTopics() });
 
       setNewQuestion("");
       setNewAnswer("");
