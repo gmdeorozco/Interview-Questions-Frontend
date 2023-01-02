@@ -1,7 +1,12 @@
 import Button from 'react-bootstrap/Button';
+import { FaJava } from 'react-icons/fa'
 
 
 function AvailableTopicsButtons( props ){
+
+let icon;
+
+
     if ( props.isLoadingAvailableTopics ) {
         return (
         <div style={{
@@ -20,7 +25,10 @@ function AvailableTopicsButtons( props ){
                 className='mb-3'
                 onClick={ () => props.setTopic(theTopic)} >
                     
-                    {theTopic}</Button>
+                    { theTopic === "Java" && < FaJava className='me-3'/> }
+                    { theTopic } 
+                    
+                    </Button>
         ))
       );
 }

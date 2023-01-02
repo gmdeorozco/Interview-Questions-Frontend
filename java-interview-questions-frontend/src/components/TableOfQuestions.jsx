@@ -100,6 +100,21 @@ function TableOfQuestions( props ){
       }
 
     return( <>
+      <div className='text-end'> 
+      <Button variant="light" className='me-4'>Prev</Button>
+      Page { props.dataOfQuestions.page.number + 1 } ---   
+       Total: { props.dataOfQuestions.page.size  }    of { props.dataOfQuestions.page.totalElements } Interview Questions 
+     
+     <Button variant="light" className='ms-4'
+        onClick={ () => { 
+          let newValue = props.page+1;
+          props.setPage( newValue );
+          console.log(newValue )
+        }}
+          
+     >Next</Button>
+     
+      </div>
         <Table striped bordered hover>
             <thead>
               <tr>

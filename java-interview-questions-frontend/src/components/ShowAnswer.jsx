@@ -7,6 +7,7 @@ import { AiOutlineSave } from 'react-icons/ai'
 import Button from 'react-bootstrap/Button';
 import {MdOutlineCancelPresentation} from 'react-icons/md'
 import { BsPencil } from 'react-icons/bs'
+import Modal from 'react-bootstrap/Modal';
 
 function ShowAnswer ( props ) {
 
@@ -16,21 +17,30 @@ function ShowAnswer ( props ) {
   if ( editingElement === props.showQuestionId  ){
    
                     return(
-                        <>
-                        <Offcanvas show={ props.show }  
-                            onHide={ () => props.setShow( false )} placement = "bottom"
-                            scroll= "true"
-                            >
-                            <Offcanvas.Header closeButton>
-                            <Offcanvas.Title> { props.showQuestionId }. { props.question }</Offcanvas.Title>
-                            </Offcanvas.Header>
-                            <Offcanvas.Body>
-                                        <InputGroup className="mb-3">
+                        <><Modal
+                        size="lg"
+                        aria-labelledby="contained-modal-title-vcenter"
+                        centered
+                        show={ props.show }  
+                        onHide={ () => props.setShow( false )}
+                      >
+                        <Modal.Header closeButton>
+                          <Modal.Title id="contained-modal-title-vcenter">
+                          { props.showQuestionId }. { props.question } 
+                                          <Button variant="secondary" onClick={ 
+                                              () => setEditingElement( props.showQuestionId )} className="me-2 ms-3">
+                                          <BsPencil/>
+                                        </Button>
+                          </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                        <InputGroup className="mb-3">
                                 <InputGroup.Text id="basic-addon1">@answer</InputGroup.Text>
                                 <Form.Control as="textarea"
                                     placeholder="Answer"
                                     aria-label="Answer"
                                     aria-describedby="basic-addon1"
+                                    rows={15}
                                     defaultValue={ newAnswer? newAnswer : props.answer }
                                     onChange = { (e) => setNewAnswer( e.target.value )}
                                 />
@@ -52,8 +62,14 @@ function ShowAnswer ( props ) {
                             >
                                 <MdOutlineCancelPresentation />
                             </Button>
-                            </Offcanvas.Body>
-                        </Offcanvas>
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button onClick={() => props.setShow( false )}>Close</Button>
+                        </Modal.Footer>
+                      </Modal>
+
+
+                       
 
 
 
@@ -64,22 +80,31 @@ function ShowAnswer ( props ) {
 
   return (
     <>
-     
-      <Offcanvas show={ props.show }  
-        onHide={ () => props.setShow( false )} placement = "bottom"
-        scroll= "true"
-        >
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title> { props.showQuestionId }. { props.question } 
+      <Modal
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      show={ props.show }  
+      onHide={ () => props.setShow( false )}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+        { props.showQuestionId }. { props.question } 
                         <Button variant="secondary" onClick={ 
                             () => setEditingElement( props.showQuestionId )} className="me-2 ms-3">
                         <BsPencil/>
-                      </Button></Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-         <pre>{ props.answer } </pre>
-        </Offcanvas.Body>
-      </Offcanvas>
+                      </Button>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <pre>{ props.answer } </pre>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={() => props.setShow( false )}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+
+
     </>
   );
 }

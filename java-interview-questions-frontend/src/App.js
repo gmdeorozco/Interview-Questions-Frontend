@@ -25,6 +25,8 @@ function App() {
   const [dataOfQuestions, setDataOfQuestions ] = useState({});
   const [isLoadingQuestionsData, setLoadingQuestionsData ] = useState(true);
   const [isLoadingAvailableTopics, setLoadingAvailableTopics ] = useState(true);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
 
   
 
@@ -35,7 +37,7 @@ function App() {
     // first data grab
   useEffect(() => {
     getDataOfQuestions();
-  }, [ topic ]);
+  }, [ topic. page, size ]);
 
   useEffect(() => {
     getAvailableTopics();
@@ -43,7 +45,7 @@ function App() {
 
   const getDataOfQuestions = () => {
     
-    let path = server + "/question" + (topic ? "/topic/" + topic:"/allpaginated");
+    let path = server + "/question" + (topic ? "/topic/" + topic+"?page="+page+"&size="+size:"/allpaginated"+"?page="+page+"&size="+size);
     console.log("path", path);
     fetch( path ) // your url may look different
       .then(resp => resp.json())
@@ -133,6 +135,10 @@ function App() {
               getDataOfQuestions = { getDataOfQuestions }
               getAvailableTopics = { getAvailableTopics }
               server = { server }
+              page = { page }
+              size = { size }
+              setPage = { setPage }
+              setSize = { setSize }
              
             />
           </Col>
@@ -162,7 +168,7 @@ function App() {
 
           <InputGroup className="mb-3"> 
             <InputGroup.Text> Answer: </InputGroup.Text>
-              <Form.Control as="textarea" aria-label="Answer" 
+              <Form.Control as="textarea" aria-label="Answer" rows={15}
                 onChange={(e) => setAnswer(e.target.value)} 
                 defaultValue = { answer }
               />
