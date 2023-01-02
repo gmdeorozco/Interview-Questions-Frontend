@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import ShowAnswer from './ShowAnswer'
 
 function TableOfQuestions( props ){
 
@@ -22,7 +23,11 @@ function TableOfQuestions( props ){
 
   const handleCloseConfirmDelete = () => setShowConfirmDelete(false);
   const handleShowComfirmDelete = ( id ) => {setShowConfirmDelete(true); setDelitingElement(id)}
-  
+  const [ showAnswer, setShowAnswer ] = useState("");
+  const [ showQuestion, setShowQuestion ] = useState("");
+  const [ showShowAnswer, setShowShowAnswer ] = useState( false );
+  const [ showQuestionId, setShowQuestionId ] = useState();
+  const [ showQuestionTopic, setShowQuestionTopic ] = useState();
 
   const deleteElement=()=>{
     const requestOptions = {
@@ -59,7 +64,7 @@ function TableOfQuestions( props ){
     fetch(props.server+'/question/update'
       , requestOptions)
       .then(response => response.json())
-      .then(data => { props.getDataOfQuestions(); props.getAvailableTopics() });
+      .then(data => { props.getDataOfQuestions(); props.getAvailableTopics();setShowAnswer(answer) });
 
       setNewQuestion("");
       setNewAnswer("");
@@ -129,22 +134,21 @@ function TableOfQuestions( props ){
                     
                     </td>
 
-                    <td>  { editingElement===question.id && 
-                    
-                    <InputGroup className="mb-3">
-                      <InputGroup.Text id="basic-addon1">@answer</InputGroup.Text>
-                      <Form.Control as="textarea"
-                        placeholder="Answer"
-                        aria-label="Answer"
-                        aria-describedby="basic-addon1"
-                        defaultValue={ question.answer }
-                        onChange = { (e) => setNewAnswer( e.target.value )}
-                      />
-                    </InputGroup>
-                    }
+                    <td> 
 
-                    { editingElement!==question.id && <>{question.answer} </>}
-                    
+          
+                    <Button variant="secondary" onClick={ () => { 
+                        setShowShowAnswer(true); 
+                        setShowAnswer( question.answer ); 
+                        setShowQuestion(question.question); 
+                        setShowQuestionId(question.id)
+                        setShowQuestionTopic( question.topic );
+                        }} className="me-2">
+                        
+
+
+                      Show
+                    </Button>
                     </td>
 
                     <td>  { editingElement===question.id && 
@@ -173,7 +177,9 @@ function TableOfQuestions( props ){
                         <AiOutlineSave/>
                       </Button>
 
-                      <Button variant="secondary"  className="me-2">
+                      <Button variant="secondary"  className="me-2"
+                        onClick={ () => setEditingElement(-1)}
+                      >
                         <MdOutlineCancelPresentation />
                       </Button>
                       </> }
@@ -215,6 +221,18 @@ function TableOfQuestions( props ){
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <ShowAnswer 
+        show = { showShowAnswer }
+        answer = { showAnswer }
+        setShow = { setShowShowAnswer }
+        question = { showQuestion }
+        topic = { showQuestionTopic }
+        showQuestionId = { showQuestionId }
+        updateQuestion = { updateQuestion }
+       
+  
+      />
 
     </>
     );

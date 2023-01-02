@@ -14,16 +14,19 @@ import { useEffect } from 'react';
 import AvailableTopicsButtons from './components/AvailableTopicsButtons';
 
 
+
 function App() {
   
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   const [ question, setQuestion ] = useState();
-  const [ answer, setAnswer ] = useState();
-  const [ topic, setTopic ] = useState("Java");
+  const [ answer, setAnswer ] = useState("");
+  const [ topic, setTopic ] = useState("");
   const [dataOfQuestions, setDataOfQuestions ] = useState({});
   const [isLoadingQuestionsData, setLoadingQuestionsData ] = useState(true);
   const [isLoadingAvailableTopics, setLoadingAvailableTopics ] = useState(true);
+
+  
 
   const [availableTopics, setAvailableTopics] = useState({})
 
@@ -39,7 +42,10 @@ function App() {
   }, []);
 
   const getDataOfQuestions = () => {
-    fetch( server + "/question/topic/"+topic) // your url may look different
+    
+    let path = server + "/question" + (topic ? "/topic/" + topic:"/allpaginated");
+    console.log("path", path);
+    fetch( path ) // your url may look different
       .then(resp => resp.json())
       .then(data => { setDataOfQuestions ( data );  setLoadingQuestionsData( false ); }) // set data to state
       console.log("loaded data availableTopics")
@@ -127,6 +133,7 @@ function App() {
               getDataOfQuestions = { getDataOfQuestions }
               getAvailableTopics = { getAvailableTopics }
               server = { server }
+             
             />
           </Col>
         </Row>
@@ -160,6 +167,8 @@ function App() {
                 defaultValue = { answer }
               />
             </InputGroup>
+            
+            { answer && <p> { answer.length } </p> }
 
             <InputGroup className="mb-3" size="sm">
             <InputGroup.Text id="topics"> Topics: </InputGroup.Text>
@@ -185,6 +194,7 @@ function App() {
           </Button>
         </Modal.Footer>
       </Modal>
+      
     </>
   );
 }
