@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,8 @@ public class QuestionEntity implements Serializable {
 
     private String question;
 
-    @Column( length = 600 )
+    @Lob
+    @Column(length=9000)
     
     private String answer;
     private String topic;
