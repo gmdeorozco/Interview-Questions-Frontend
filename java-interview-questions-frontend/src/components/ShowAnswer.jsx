@@ -20,6 +20,21 @@ function ShowAnswer ( props ) {
 
   if ( props.isLoadingShowQuestionsData ) {
       return (
+        <>
+        <Modal
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        show={ props.show }  
+        onHide={ () => props.setShow( false )}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+          
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
       <div style={{
         display: "flex",
         flexDirection: "column",
@@ -27,6 +42,10 @@ function ShowAnswer ( props ) {
         justifyContent: "center",
         height: "100vh",
       }}>Loading the Interview Question to show {console.log("loading state")}</div>
+      </Modal.Body>
+      </Modal>
+
+      </>
     );
     }
   else
@@ -61,6 +80,9 @@ function ShowAnswer ( props ) {
                     onChange = { (e) => setNewAnswer( e.target.value )}
                 />
                 </InputGroup>
+
+                { newAnswer && <p> { newAnswer.length } of 9000 Characters </p> }
+
                 <Button variant="danger" onClick={ () => {
                     props.updateQuestion(
                         editingElement, 

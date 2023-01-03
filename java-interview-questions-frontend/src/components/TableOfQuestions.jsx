@@ -120,19 +120,43 @@ function TableOfQuestions( props ){
       }
 
     return( <>
-      <div className='text-end'> 
-      <Button variant="light" className='me-4'>Prev</Button>
+      <div className='text-center mb-4'> 
+
+      <Button variant="success" className='me-4'
+      onClick={ () => { 
+        let newValue = 0;
+        props.setPage( newValue );
+        console.log( "page ", props.page )
+      }}
+      >First</Button>
+
+      <Button variant="success" className='me-4'
+      onClick={ () => { 
+        let newValue = props.page-1;
+        props.setPage( newValue > -1 ? newValue : props.page );
+        console.log( "page ", props.page )
+      }}
+      >Prev</Button>
       Page { props.dataOfQuestions.page.number + 1 } ---   
        Total: { props.dataOfQuestions.page.size  }    of { props.dataOfQuestions.page.totalElements } Interview Questions 
      
-     <Button variant="light" className='ms-4'
+     <Button variant="success" className='ms-4'
         onClick={ () => { 
           let newValue = props.page+1;
-          props.setPage( newValue );
+          props.setPage( newValue < props.dataOfQuestions.page.totalPages 
+              ? newValue : props.page  );
           console.log( "page ", props.page )
         }}
           
      >Next</Button>
+
+<Button variant="success" className='ms-4'
+      onClick={ () => { 
+        let newValue = props.dataOfQuestions.page.totalPages -1;
+        props.setPage( newValue );
+        console.log( "page ", props.page )
+      }}
+      >Last</Button>
      
       </div>
         <Table striped bordered hover>

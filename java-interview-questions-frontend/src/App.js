@@ -12,6 +12,7 @@ import Col from 'react-bootstrap/Col';
 import TableOfQuestions from './components/TableOfQuestions';
 import { useEffect } from 'react';
 import AvailableTopicsButtons from './components/AvailableTopicsButtons';
+import addLineSeparators from './logic/addLineSeparators';
 
 
 
@@ -67,7 +68,7 @@ function App() {
     setShowCreateModal(false);
     let questionEntity = {
       question : question,
-      answer : answer,
+      answer : addLineSeparators(answer,60),
       topic : topic
     };
    
@@ -81,7 +82,7 @@ function App() {
     fetch( server + '/question/create'
       , requestOptions)
       .then(response => response.json())
-      .then(data => { getDataOfQuestions();  getAvailableTopics()} );
+      .then(data => { getDataOfQuestions();  getAvailableTopics(); setPage(data.page.totalPages-1 )} );
 
       setQuestion("");
       setAnswer("");
@@ -124,6 +125,7 @@ function App() {
               availableTopics = { availableTopics }
               isLoadingAvailableTopics = { isLoadingAvailableTopics }
               setTopic = { setTopic }
+              setPage = { setPage }
              
             />
           </Col>
@@ -132,7 +134,7 @@ function App() {
           <Col>
             {console.log("page before loading", page)}
             <TableOfQuestions
-              topic=""
+              topic={topic}
               dataOfQuestions = { dataOfQuestions }
               isLoadingQuestionsData = { isLoadingQuestionsData }
               getDataOfQuestions = { getDataOfQuestions }
@@ -178,7 +180,7 @@ function App() {
               />
             </InputGroup>
             
-            { answer && <p> { answer.length } </p> }
+            { answer && <p> { answer.length } of 9000 Characters </p> }
 
             <InputGroup className="mb-3" size="sm">
             <InputGroup.Text id="topics"> Topics: </InputGroup.Text>
@@ -190,7 +192,13 @@ function App() {
                 defaultValue = { topic }
              />
           </InputGroup>
-          
+
+          <AvailableTopicsButtons
+           availableTopics = { availableTopics }
+           isLoadingAvailableTopics = { isLoadingAvailableTopics }
+           setTopic = { setTopic }
+           setPage = { setPage }
+          />
           
           </Form>
 
