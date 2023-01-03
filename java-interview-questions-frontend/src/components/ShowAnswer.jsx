@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import {MdOutlineCancelPresentation} from 'react-icons/md'
 import { BsPencil } from 'react-icons/bs'
 import Modal from 'react-bootstrap/Modal';
+import addLineSeparators from '../logic/addLineSeparators';
 
 function ShowAnswer ( props ) {
 
@@ -15,8 +16,6 @@ function ShowAnswer ( props ) {
 
     const [ editingElement, setEditingElement ] = useState();
     const [ newAnswer, setNewAnswer] = useState();
-
-    
 
 
   if ( props.isLoadingShowQuestionsData ) {
@@ -66,7 +65,7 @@ function ShowAnswer ( props ) {
                     props.updateQuestion(
                         editingElement, 
                         props.showQuestionData.question, 
-                        newAnswer, 
+                        addLineSeparators( newAnswer, 60 ), 
                         props.showQuestionData.topic,
                         props.showQuestionData._links.update.href,
                         props.showQuestionData._links.self.href
