@@ -37,7 +37,7 @@ function App() {
     // first data grab
   useEffect(() => {
     getDataOfQuestions();
-  }, [ topic. page, size ]);
+  }, [ topic, page, size ]);
 
   useEffect(() => {
     getAvailableTopics();
@@ -46,7 +46,9 @@ function App() {
   const getDataOfQuestions = () => {
     
     let path = server + "/question" + (topic ? "/topic/" + topic+"?page="+page+"&size="+size:"/allpaginated"+"?page="+page+"&size="+size);
+    
     console.log("path", path);
+
     fetch( path ) // your url may look different
       .then(resp => resp.json())
       .then(data => { setDataOfQuestions ( data );  setLoadingQuestionsData( false ); }) // set data to state
@@ -128,8 +130,9 @@ function App() {
         </Row>
         <Row>
           <Col>
+            {console.log("page before loading", page)}
             <TableOfQuestions
-              topic="Java"
+              topic=""
               dataOfQuestions = { dataOfQuestions }
               isLoadingQuestionsData = { isLoadingQuestionsData }
               getDataOfQuestions = { getDataOfQuestions }
@@ -139,6 +142,7 @@ function App() {
               size = { size }
               setPage = { setPage }
               setSize = { setSize }
+            
              
             />
           </Col>

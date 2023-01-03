@@ -13,6 +13,8 @@ import ShowAnswer from './ShowAnswer'
 
 function TableOfQuestions( props ){
 
+  console.log("entry page", props.page)
+
   const [ editingElement, setEditingElement ] = useState(-1);
   const [ delitingElement, setDelitingElement ] = useState(-1);
 
@@ -28,6 +30,10 @@ function TableOfQuestions( props ){
   const [ showShowAnswer, setShowShowAnswer ] = useState( false );
   const [ showQuestionId, setShowQuestionId ] = useState();
   const [ showQuestionTopic, setShowQuestionTopic ] = useState();
+  
+  const [ showQuestionLink, setShowQuestionLink ] = useState();
+  const [ showQuestionData, setShowQuestionData ] = useState();
+  const [ isLoadingShowQuestionsData, setLoadingShowQuestionsData ] = useState(true);
 
   const deleteElement=()=>{
     const requestOptions = {
@@ -44,9 +50,19 @@ function TableOfQuestions( props ){
 
     };
 
+    const getShowQuestionData = ( link ) => {
+      if( link ){
+       
+        fetch( link.replace("http","https") ) // your url may look different
+        .then(resp => resp.json())
+        .then(data => { setShowQuestionData ( data );  setLoadingShowQuestionsData( false ); }) // set data to state
+        console.log("loaded data showQuestion")
+      }
+      
+    }
 
 
-  const updateQuestion = ( id, question, answer, topic ) =>{
+  const updateQuestion = ( id, question, answer, topic,updateLink, selfLink ) =>{
     setEditingElement(-1);
     let questionEntity = {
       id: id,
@@ -61,10 +77,14 @@ function TableOfQuestions( props ){
       body: JSON.stringify( questionEntity )
     };
 
-    fetch(props.server+'/question/update'
+    fetch( updateLink.replace("http", "https")
       , requestOptions)
       .then(response => response.json())
-      .then(data => { props.getDataOfQuestions(); props.getAvailableTopics();setShowAnswer(answer) });
+      .then(data => { 
+          props.getDataOfQuestions(); 
+          props.getAvailableTopics();
+          getShowQuestionData( selfLink);
+           });
 
       setNewQuestion("");
       setNewAnswer("");
@@ -109,7 +129,7 @@ function TableOfQuestions( props ){
         onClick={ () => { 
           let newValue = props.page+1;
           props.setPage( newValue );
-          console.log(newValue )
+          console.log( "page ", props.page )
         }}
           
      >Next</Button>
@@ -154,10 +174,8 @@ function TableOfQuestions( props ){
           
                     <Button variant="secondary" onClick={ () => { 
                         setShowShowAnswer(true); 
-                        setShowAnswer( question.answer ); 
-                        setShowQuestion(question.question); 
-                        setShowQuestionId(question.id)
-                        setShowQuestionTopic( question.topic );
+                        getShowQuestionData( question._links.self.href )
+
                         }} className="me-2">
                         
 
@@ -239,14 +257,12 @@ function TableOfQuestions( props ){
 
       <ShowAnswer 
         show = { showShowAnswer }
-        answer = { showAnswer }
         setShow = { setShowShowAnswer }
-        question = { showQuestion }
-        topic = { showQuestionTopic }
-        showQuestionId = { showQuestionId }
         updateQuestion = { updateQuestion }
+        showQuestionData = { showQuestionData }
+        isLoadingShowQuestionsData = { isLoadingShowQuestionsData }
        
-  
+        
       />
 
     </>

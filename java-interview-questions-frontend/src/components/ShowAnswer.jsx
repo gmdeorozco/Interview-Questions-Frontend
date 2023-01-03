@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
@@ -11,102 +11,130 @@ import Modal from 'react-bootstrap/Modal';
 
 function ShowAnswer ( props ) {
 
+   console.log("print show answer")
+
     const [ editingElement, setEditingElement ] = useState();
     const [ newAnswer, setNewAnswer] = useState();
-  
-  if ( editingElement === props.showQuestionId  ){
+
+    
+
+
+  if ( props.isLoadingShowQuestionsData ) {
+      return (
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}>Loading the Interview Question to show {console.log("loading state")}</div>
+    );
+    }
+  else
+  if ( editingElement === props.showQuestionData.id  ){
    
-                    return(
-                        <><Modal
-                        size="lg"
-                        aria-labelledby="contained-modal-title-vcenter"
-                        centered
-                        show={ props.show }  
-                        onHide={ () => props.setShow( false )}
-                      >
-                        <Modal.Header closeButton>
-                          <Modal.Title id="contained-modal-title-vcenter">
-                          { props.showQuestionId }. { props.question } 
-                                          <Button variant="secondary" onClick={ 
-                                              () => setEditingElement( props.showQuestionId )} className="me-2 ms-3">
-                                          <BsPencil/>
-                                        </Button>
-                          </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                        <InputGroup className="mb-3">
-                                <InputGroup.Text id="basic-addon1">@answer</InputGroup.Text>
-                                <Form.Control as="textarea"
-                                    placeholder="Answer"
-                                    aria-label="Answer"
-                                    aria-describedby="basic-addon1"
-                                    rows={15}
-                                    defaultValue={ newAnswer? newAnswer : props.answer }
-                                    onChange = { (e) => setNewAnswer( e.target.value )}
-                                />
-                                </InputGroup>
-                                <Button variant="danger" onClick={ () => {
-                                    props.updateQuestion(
-                                        editingElement, 
-                                        props.question, 
-                                        newAnswer, 
-                                        props.topic )
-                                        
-                                    setEditingElement(-1);
-                                    }} className="me-2">
-                                <AiOutlineSave/>
-                            </Button>
+    return(
+        <><Modal
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        show={ props.show }  
+        onHide={ () => props.setShow( false )}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+          { props.showQuestionData.id }. { props.showQuestionData.question } 
+                          <Button variant="secondary" onClick={ 
+                              () => setEditingElement( props.showQuestionData.id )} className="me-2 ms-3">
+                          <BsPencil/>
+                        </Button>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon1">@answer</InputGroup.Text>
+                <Form.Control as="textarea"
+                    placeholder="Answer"
+                    aria-label="Answer"
+                    aria-describedby="basic-addon1"
+                    rows={ 15 }
+                    defaultValue={ props.showQuestionData.answer }
+                    onChange = { (e) => setNewAnswer( e.target.value )}
+                />
+                </InputGroup>
+                <Button variant="danger" onClick={ () => {
+                    props.updateQuestion(
+                        editingElement, 
+                        props.showQuestionData.question, 
+                        newAnswer, 
+                        props.showQuestionData.topic,
+                        props.showQuestionData._links.update.href,
+                        props.showQuestionData._links.self.href
+                        
+                        )
+                        
+                    setEditingElement(-1);
+                    //props.setShow( false );
+                    //props.setShow( true );
 
-                            <Button variant="secondary"  className="me-2"
-                              onClick={ ()=>setEditingElement(-1) }
-                            >
-                                <MdOutlineCancelPresentation />
-                            </Button>
-                        </Modal.Body>
-                        <Modal.Footer>
-                          <Button onClick={() => props.setShow( false )}>Close</Button>
-                        </Modal.Footer>
-                      </Modal>
+                    }} className="me-2">
+                <AiOutlineSave/>
+            </Button>
+
+            <Button variant="secondary"  className="me-2"
+              onClick={ ()=>setEditingElement(-1) }
+            >
+                <MdOutlineCancelPresentation />
+            </Button>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => props.setShow( false )}>Close</Button>
+        </Modal.Footer>
+      </Modal>
 
 
-                       
+        
 
 
 
-                    
-                  </>
-                    );
+    
+  </>
+    );
+  }
+  else{
+
+    return (
+      <>
+        <Modal
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        show={ props.show }  
+        onHide={ () => props.setShow( false )}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+          { props.showQuestionData.id }. { props.showQuestionData.question } 
+                          <Button variant="secondary" onClick={ 
+                              () => setEditingElement( props.showQuestionData.id )} className="me-2 ms-3">
+                          <BsPencil/>
+                        </Button>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <pre>{ props.showQuestionData.answer } </pre>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => props.setShow( false )}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+  
+  
+      </>
+    );
   }
 
-  return (
-    <>
-      <Modal
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-      show={ props.show }  
-      onHide={ () => props.setShow( false )}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-        { props.showQuestionId }. { props.question } 
-                        <Button variant="secondary" onClick={ 
-                            () => setEditingElement( props.showQuestionId )} className="me-2 ms-3">
-                        <BsPencil/>
-                      </Button>
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <pre>{ props.answer } </pre>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={() => props.setShow( false )}>Close</Button>
-      </Modal.Footer>
-    </Modal>
-
-
-    </>
-  );
+  
 }
 
 export default ShowAnswer;
