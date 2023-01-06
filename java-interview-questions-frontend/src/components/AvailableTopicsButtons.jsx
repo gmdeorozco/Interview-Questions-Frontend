@@ -32,7 +32,7 @@ let icon;
               <Button key={index} 
                   variant="outline-dark" 
                   className='mb-3'
-                  onClick={ () => { props.setTopic(theTopic), props.setPage(0) }} >
+                  onClick={ () => { props.setTopic(theTopic); props.setPage(0) }} >
                       
                       { theTopic === "Java" && < FaJava className='me-3'/> }
                       { theTopic === "React" && < FaReact className='me-3'/> }
