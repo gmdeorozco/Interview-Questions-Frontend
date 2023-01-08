@@ -52,7 +52,7 @@ function App() {
 
     fetch( path ) // your url may look different
       .then(resp => resp.json())
-      .then(data => { setDataOfQuestions ( data );  setLoadingQuestionsData( false ); }) // set data to state
+      .then(data => { setDataOfQuestions ( data );  setLoadingQuestionsData( false ); console.log("%%%",data)}) // set data to state
       console.log("loaded data availableTopics")
   }
 
