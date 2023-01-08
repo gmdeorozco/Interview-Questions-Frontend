@@ -98,7 +98,7 @@ function App() {
     <>
       <Container lg="6" >
         <Row>
-          <Col> <h1>Interview Questions</h1> </Col>
+          <Col> <h1>Interview Questions...</h1> </Col>
         </Row>
         <Row >
           <Col lg="1">
