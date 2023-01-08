@@ -231,7 +231,7 @@ function TableOfQuestions( props ){
                     <td> 
                     { editingElement===question.id && 
                       <>
-                      <Button variant="danger" onClick={ () => updateQuestion(question.id, question.question, question.answer, question.topic)} className="me-2">
+                      <Button variant="danger" onClick={ () => updateQuestion(question.id, question.question, question.answer, question.topic,question._links.update.href,question._links.self.href )} className="me-2">
                         <AiOutlineSave/>
                       </Button>
 
