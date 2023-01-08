@@ -33,7 +33,7 @@ function App() {
 
   const [availableTopics, setAvailableTopics] = useState({})
 
-  const server = 'http://javainterviewquestions-production.up.railway.app/api/v1'
+  const server = 'https://javainterviewquestions-production.up.railway.app/api/v1'
 
     // first data grab
   useEffect(() => {
