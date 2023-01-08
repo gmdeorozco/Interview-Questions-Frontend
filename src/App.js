@@ -33,7 +33,7 @@ function App() {
 
   const [availableTopics, setAvailableTopics] = useState({})
 
-  const server = 'https://8080-gmdeorozco-javaintervie-f32uhftkizu.ws-us80.gitpod.io/api/v1'
+  const server = 'http://138.197.74.229:8080/api/v1'
 
     // first data grab
   useEffect(() => {
