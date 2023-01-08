@@ -106,6 +106,7 @@ function TableOfQuestions( props ){
         }}>Loading the data {console.log("loading state")}</div>
       );
       }
+      /*
 
       if ( props.dataOfQuestions.page.totalElements === 0) {
         return (
@@ -117,7 +118,7 @@ function TableOfQuestions( props ){
           height: "100vh",
         }}>No records found {console.log("no records found")}</div>
       );
-      }
+      }*/
 
     return( <>
       <div className='text-center mb-4'> 
