@@ -33,7 +33,7 @@ function App() {
 
   const [availableTopics, setAvailableTopics] = useState({})
 
-  const server = 'http://138.197.74.229:8080/api/v1'
+  const server = 'http://javainterviewquestions-production.up.railway.app/api/v1'
 
     // first data grab
   useEffect(() => {
