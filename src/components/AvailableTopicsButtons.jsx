@@ -9,6 +9,7 @@ import { FiDatabase } from 'react-icons/fi'
 import { GiComputing } from 'react-icons/gi'
 import { BsDiagram3 } from 'react-icons/bs'
 import { CgTemplate } from 'react-icons/cg'
+import { AiOutlineConsoleSql } from 'react-icons/ai'
 
 
 
@@ -55,6 +56,7 @@ let icon;
                       { theTopic === "UML" && <BsDiagram3 className='me-3'/>}
                       { theTopic === "C++" && <SiCplusplus className='me-3' />}
                       { theTopic === "Templates" && <CgTemplate className='me-3' />}
+                      { theTopic === "SQL" && <AiOutlineConsoleSql className='me-3' />}
                         
                       { theTopic } 
                       
