@@ -3,8 +3,13 @@ import { FaJava } from 'react-icons/fa'
 import { FaReact, FaHtml5 } from 'react-icons/fa'
 import { FaGitAlt } from 'react-icons/fa'
 import { GrMysql } from 'react-icons/gr'
-import { SiSpring, SiKubernetes, SiCss3,SiJavascript, SiApachemaven } from 'react-icons/si'
+import { SiSpring, SiKubernetes, SiCss3,SiJavascript, SiApachemaven, SiCplusplus } from 'react-icons/si'
 import { FaAws } from 'react-icons/fa'
+import { FiDatabase } from 'react-icons/fi'
+import { GiComputing } from 'react-icons/gi'
+import { BsDiagram3 } from 'react-icons/bs'
+import { CgTemplate } from 'react-icons/cg'
+
 
 
 
@@ -45,6 +50,11 @@ let icon;
                       { theTopic === "CSS" && <SiCss3  className='me-3'/> }
                       { theTopic === "Javascript" && <SiJavascript  className='me-3'/> }
                       { theTopic === "Maven" && <SiApachemaven className='me-3'/> }
+                      { theTopic === "Data Structures" && <FiDatabase className='me-3'/>}
+                      { theTopic === "Algorithms" && <GiComputing className='me-3'/> }
+                      { theTopic === "UML" && <BsDiagram3 className='me-3'/>}
+                      { theTopic === "C++" && <SiCplusplus className='me-3' />}
+                      { theTopic === "Templates" && <CgTemplate className='me-3' />}
                         
                       { theTopic } 
                       
