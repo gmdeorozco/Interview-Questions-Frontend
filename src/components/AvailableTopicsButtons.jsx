@@ -3,7 +3,7 @@ import { FaJava } from 'react-icons/fa'
 import { FaReact, FaHtml5 } from 'react-icons/fa'
 import { FaGitAlt } from 'react-icons/fa'
 import { GrMysql } from 'react-icons/gr'
-import { SiSpring, SiKubernetes, SiCss3,SiJavascript } from 'react-icons/si'
+import { SiSpring, SiKubernetes, SiCss3,SiJavascript, SiApachemaven } from 'react-icons/si'
 import { FaAws } from 'react-icons/fa'
 
 
@@ -44,6 +44,7 @@ let icon;
                       { theTopic === "HTML" && <FaHtml5  className='me-3'/> }
                       { theTopic === "CSS" && <SiCss3  className='me-3'/> }
                       { theTopic === "Javascript" && <SiJavascript  className='me-3'/> }
+                      { theTopic === "Maven" && <SiApachemaven className='me-3'/> }
                         
                       { theTopic } 
                       

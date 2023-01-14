@@ -109,6 +109,7 @@ function ShowAnswer ( props ) {
             </Button>
         </Modal.Body>
         <Modal.Footer>
+          <div> Elo: </div>
           <Button onClick={() => props.setShow( false )}>Close</Button>
         </Modal.Footer>
       </Modal>
