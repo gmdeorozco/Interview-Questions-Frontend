@@ -342,6 +342,9 @@ function App() {
               setSelectedSource = { setSelectedSource }
               selectedSource = { selectedSource }
               onMain = { false }
+
+              setNewSourceForQuestion = { setNewSourceForQuestion }
+              newSourceForQuestion = { newSourceForQuestion }
             />
 
           <Button variant="secondary" onClick={ handleCloseCreateModal }>
