@@ -53,6 +53,8 @@ function ShowAnswer ( props ) {
     }
   else
   if ( editingElement === props.showQuestionData.id  ){
+
+    setNewAnswer(props.showQuestionData.answer);
    
     return(
         <><Modal
