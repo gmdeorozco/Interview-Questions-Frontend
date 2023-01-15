@@ -122,7 +122,7 @@ function App() {
       body: JSON.stringify( questionEntity )
     };
 
-    let path = selectedSource ? server + '/question/create/onsource/' + selectedSource
+    let path = newSourceForQuestion ? server + '/question/create/onsource/' + newSourceForQuestion
     : server + '/question/create';
 
     //console.log( "path to add source at saving ", path)
