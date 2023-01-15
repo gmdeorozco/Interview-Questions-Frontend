@@ -54,7 +54,7 @@ function ShowAnswer ( props ) {
   else
   if ( editingElement === props.showQuestionData.id  ){
 
-    setNewAnswer(props.showQuestionData.answer);
+    
    
     return(
         <><Modal
@@ -160,7 +160,10 @@ function ShowAnswer ( props ) {
           <Modal.Title id="contained-modal-title-vcenter">
           { props.showQuestionData.id }. { props.showQuestionData.question } 
                           <Button variant="secondary" onClick={ 
-                              () => setEditingElement( props.showQuestionData.id )} className="me-2 ms-3">
+                              () => {
+                                setNewAnswer(props.showQuestionData.answer);
+                                setEditingElement( props.showQuestionData.id );
+                              }} className="me-2 ms-3">
                           <BsPencil/>
                         </Button>
           </Modal.Title>
