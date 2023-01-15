@@ -9,6 +9,8 @@ import {MdOutlineCancelPresentation} from 'react-icons/md'
 import { BsPencil } from 'react-icons/bs'
 import Modal from 'react-bootstrap/Modal';
 import addLineSeparators from '../logic/addLineSeparators';
+import SelectSources from './SelectSources';
+import { Table } from 'react-bootstrap';
 
 function ShowAnswer ( props ) {
 
@@ -16,6 +18,7 @@ function ShowAnswer ( props ) {
 
     const [ editingElement, setEditingElement ] = useState();
     const [ newAnswer, setNewAnswer] = useState();
+   
 
 
   if ( props.isLoadingShowQuestionsData ) {
@@ -83,6 +86,19 @@ function ShowAnswer ( props ) {
 
                 { newAnswer && <p> { newAnswer.length } of 9000 Characters </p> }
 
+                <SelectSources
+              sources = { props.sources } 
+              setSources = { props.setSources }
+              isLoadingSources = { props.isLoadingSources }
+              topic = { props.topic }
+              setSelectedSource = { props.setSelectedSource }
+              selectedSource = { props.selectedSource }
+              default = { props.showQuestionData.source ? props.showQuestionData.source.id :"" }
+              newSourceForQuestion = { props.newSourceForQuestion }
+              setNewSourceForQuestion = { props.setNewSourceForQuestion }
+              onMain = { false }
+            />
+
                 <Button variant="danger" onClick={ () => {
                     props.updateQuestion(
                         editingElement, 
@@ -90,12 +106,13 @@ function ShowAnswer ( props ) {
                         addLineSeparators( newAnswer, 60 ), 
                         props.showQuestionData.topic,
                         props.showQuestionData._links.update.href,
-                        props.showQuestionData._links.self.href
+                        props.showQuestionData._links.self.href,
+                        props.newSourceForQuestion
                         
                         )
                         
                     setEditingElement(-1);
-                    //props.setShow( false );
+                    props.setShow( false );
                     //props.setShow( true );
 
                     }} className="me-2">
@@ -109,8 +126,11 @@ function ShowAnswer ( props ) {
             </Button>
         </Modal.Body>
         <Modal.Footer>
-          <div> Elo: </div>
-          <Button onClick={() => props.setShow( false )}>Close</Button>
+
+          
+          <Button onClick={() => {props.setShow( false );
+            setEditingElement(-1);
+          }}>Close</Button>
         </Modal.Footer>
       </Modal>
 
@@ -147,7 +167,37 @@ function ShowAnswer ( props ) {
           <pre>{ props.showQuestionData.answer } </pre>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => props.setShow( false )}>Close</Button>
+
+        {props.showQuestionData.source &&<> 
+          <Table striped bordered hover size="sm">
+      <thead>
+        <tr>
+          <th>Source Name:</th>
+          <th>Link:</th>
+        
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td> { props.showQuestionData.source.name }</td>
+          <td>
+            <a href={props.showQuestionData.source.sourceLink } 
+            target="_blank">{ props.showQuestionData.source.sourceLink }
+            </a> </td>
+        
+        </tr>
+        
+      </tbody>
+    </Table>
+
+          </>}
+
+          <Button onClick={() => {
+            setEditingElement(-1);
+            props.setShow( false ); 
+            }
+            
+            }>Close</Button> 
         </Modal.Footer>
       </Modal>
   

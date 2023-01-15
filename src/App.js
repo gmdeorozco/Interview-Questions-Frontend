@@ -13,6 +13,9 @@ import TableOfQuestions from './components/TableOfQuestions';
 import { useEffect } from 'react';
 import AvailableTopicsButtons from './components/AvailableTopicsButtons';
 import addLineSeparators from './logic/addLineSeparators';
+import SelectSources from './components/SelectSources';
+import CreateSourceModal from './components/CreateSourceModal';
+import { ButtonToolbar } from 'react-bootstrap';
 
 
 
@@ -29,15 +32,27 @@ function App() {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
 
+  const [ isLoadingSources, setLoadingSources ] = useState(true);
+  const [ sources, setSources ] = useState({});
+  const [ newSource, setNewSource ] = useState({});
+  const [ selectedSource, setSelectedSource ] = useState();
+
   
 
-  const [availableTopics, setAvailableTopics] = useState({})
+  const [ availableTopics, setAvailableTopics ] = useState({})
+  const [ showCreateSourceModal, setShowCreateSourceModal ] = useState(false);
+
+  const [ newSourceForQuestion, setNewSourceForQuestion ] = useState();
 
   const server = 'https://javainterviewquestions-production.up.railway.app/api/v1'
 
     // first data grab
   useEffect(() => {
     getDataOfQuestions();
+  }, [ selectedSource, topic, page, size ]);
+
+  useEffect(() => {
+    getDataOfSources();
   }, [ topic, page, size ]);
 
   useEffect(() => {
@@ -45,15 +60,41 @@ function App() {
   }, []);
 
   const getDataOfQuestions = () => {
+
+
     
-    let path = server + "/question" + (topic ? "/topic/" + topic+"?page="+page+"&size="+size:"/allpaginated"+"?page="+page+"&size="+size);
+    let path = server + "/question" + (topic 
+        ? "/topic/" + topic+( selectedSource? "/source/"+selectedSource:"")+"?page="+page+"&size="+size
+        :"/allpaginated"+"?page="+page+"&size="+size);
     
     console.log("path", path);
 
     fetch( path ) // your url may look different
       .then(resp => resp.json())
-      .then(data => { setDataOfQuestions ( data );  setLoadingQuestionsData( false ); console.log("%%%",data)}) // set data to state
+      .then(data => { setDataOfQuestions ( data ); 
+  
+        setLoadingQuestionsData( false ); 
+        
+      }
+        
+        ) // set data to state
       console.log("loaded data availableTopics")
+  }
+
+  const getDataOfSources = () => {
+    
+    
+    let path = server  + "/source"  + ( topic ? "/topic/"  + topic    +"/all"
+      : "/all" );
+    
+    console.log("pathSource", path);
+
+    fetch( path ) // your url may look different
+      .then(resp => resp.json())
+      .then(data => { setSources ( data );  
+        setLoadingSources ( false ); 
+        //console.log(data);
+        }) ;
   }
 
   const getAvailableTopics = () =>{
@@ -62,6 +103,8 @@ function App() {
     .then(data => { setAvailableTopics ( data ); setLoadingAvailableTopics(false)}) // set data to state
     
   }
+
+  
 
   const submitNewQuestion = () => {
 
@@ -79,18 +122,53 @@ function App() {
       body: JSON.stringify( questionEntity )
     };
 
-    fetch( server + '/question/create'
+    let path = selectedSource ? server + '/question/create/onsource/' + selectedSource
+    : server + '/question/create';
+
+    //console.log( "path to add source at saving ", path)
+    fetch( path
       , requestOptions)
       .then(response => response.json())
-      .then(data => { getDataOfQuestions();  getAvailableTopics(); setPage(data.page.totalPages-1 )} );
+      .then( ( data ) => {
+        getDataOfQuestions();  
+        getAvailableTopics(); 
+        
+      } 
+        
+       );
 
       setQuestion("");
       setAnswer("");
       setTopic("");
   } 
 
+  const submitNewSource = () => {
+
+    setShowCreateSourceModal(false);
+    let sourceEntity = { ... newSource }
+   
+    console.log("new Source ", newSource)
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify( sourceEntity )
+    };
+
+    fetch( server + '/source/create'
+      , requestOptions)
+      .then( response => response.json() )
+      .then( data => { getDataOfSources(); setNewSource({})} );
+
+  }
+
   const handleShowCreateModal = () => setShowCreateModal(true);
   const handleCloseCreateModal = () => setShowCreateModal(false);
+
+  const handleShowCreateSourceModal = () => { setShowCreateSourceModal(true); }
+  const handleCloseCreateSourceModal = () => setShowCreateSourceModal(false);
+
+
 
 
 
@@ -102,22 +180,48 @@ function App() {
         </Row>
         <Row >
           <Col lg="1">
-            <Button variant="primary" onClick={ handleShowCreateModal } className="mb-3 mt-3">
+            
+          </Col> 
+         
+        </Row>
+        <Row>
+        <Col lg="1">
+            <Button variant="primary" 
+              onClick={ handleShowCreateModal } className="mb-3 mt-3">
               <BsPlusLg/> 
             </Button>
           </Col> 
           <Col>
-            <InputGroup className="mb-3 mt-3">
-              <InputGroup.Text id="basic-addon1"> Topic: </InputGroup.Text>
-              <Form.Control
-                placeholder="Topic"
-                aria-label="Topic"
-                aria-describedby="basic-addon1"
-                value={ topic }
-                onChange={ ( e ) => setTopic( e.target.value ) } 
-              />
-            </InputGroup>
+          <ButtonToolbar>
+          <InputGroup className="mb-3">
+          <SelectSources
+              sources = { sources } 
+              setSources = { setSources }
+              isLoadingSources = { isLoadingSources }
+              topic = { topic }
+              setSelectedSource = { setSelectedSource }
+              selectedSource = { selectedSource }
+              setNewSourceForQuestion = { setNewSourceForQuestion }
+              newSourceForQuestion = { newSourceForQuestion }
+              onMain = { true }
+              
+            />
+        <Button variant="outline-secondary" id="button-addon2"
+           onClick={() => handleShowCreateSourceModal()} 
+           className="mb-3 mt-3"
+        >
+           Add new source...
+        </Button>
+      </InputGroup></ButtonToolbar>
+
+          
+          
+            
+
+
+         
           </Col>
+
         </Row>
         <Row>
           <Col>
@@ -126,6 +230,9 @@ function App() {
               isLoadingAvailableTopics = { isLoadingAvailableTopics }
               setTopic = { setTopic }
               setPage = { setPage }
+              handleShowCreateModal = { handleShowCreateModal }
+              setNewSource = { setNewSource }
+              newSource = { newSource }
              
             />
           </Col>
@@ -144,6 +251,16 @@ function App() {
               size = { size }
               setPage = { setPage }
               setSize = { setSize }
+              sources = { sources } 
+
+              setSources = { setSources }
+              isLoadingSources = { isLoadingSources }
+              
+              setSelectedSource = { setSelectedSource }
+              selectedSource = { selectedSource }
+
+              newSourceForQuestion = { newSourceForQuestion }
+              setNewSourceForQuestion = { setNewSourceForQuestion }
             
              
             />
@@ -151,7 +268,18 @@ function App() {
         </Row>
       </Container>
 
-     
+     < CreateSourceModal 
+        showCreateSourceModal = { showCreateSourceModal }
+        handleCloseCreateSourceModal = { handleCloseCreateSourceModal }
+        newSource = { newSource }
+        setNewSource = { setNewSource }
+        setTopic ={ setTopic }
+        setPage = { setPage }
+        topic = { topic }
+        availableTopics ={ availableTopics }
+        isLoadingAvailableTopics = { isLoadingAvailableTopics }
+        submitNewSource ={ submitNewSource }
+     />
 
       <Modal show={ showCreateModal } onHide={ handleCloseCreateModal }>
         <Modal.Header closeButton>
@@ -198,12 +326,24 @@ function App() {
            isLoadingAvailableTopics = { isLoadingAvailableTopics }
            setTopic = { setTopic }
            setPage = { setPage }
+           setSources = { setSources }
           />
           
           </Form>
 
         </Modal.Body>
         <Modal.Footer>
+        <SelectSources
+              sources = { sources } 
+              setSources = { setSources }
+              isLoadingSources = { isLoadingSources }
+              topic = { topic }
+              handleShowCreateSourceModal = { handleShowCreateSourceModal } 
+              setSelectedSource = { setSelectedSource }
+              selectedSource = { selectedSource }
+              onMain = { false }
+            />
+
           <Button variant="secondary" onClick={ handleCloseCreateModal }>
             Close
           </Button>

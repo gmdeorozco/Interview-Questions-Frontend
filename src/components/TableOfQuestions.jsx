@@ -56,13 +56,13 @@ function TableOfQuestions( props ){
         fetch( link.replace("http","https") ) // your url may look different
         .then(resp => resp.json())
         .then(data => { setShowQuestionData ( data );  setLoadingShowQuestionsData( false ); }) // set data to state
-        console.log("loaded data showQuestion")
+        //console.log("loaded data showQuestion")
       }
       
     }
 
 
-  const updateQuestion = ( id, question, answer, topic,updateLink, selfLink ) =>{
+  const updateQuestion = ( id, question, answer, topic,updateLink, selfLink, sourceId ) =>{
     setEditingElement(-1);
     let questionEntity = {
       id: id,
@@ -77,7 +77,7 @@ function TableOfQuestions( props ){
       body: JSON.stringify( questionEntity )
     };
 
-    fetch( updateLink.replace("http", "https")
+    fetch( updateLink.replace("http", "https") + ( sourceId ? "/source/" + sourceId :"" )
       , requestOptions)
       .then(response => response.json())
       .then(data => { 
@@ -92,7 +92,7 @@ function TableOfQuestions( props ){
   }
 
 
-    console.log( "carga tabla" )
+    //console.log( "carga tabla" )
     
 
     if ( props.isLoadingQuestionsData ) {
@@ -127,7 +127,7 @@ function TableOfQuestions( props ){
       onClick={ () => { 
         let newValue = 0;
         props.setPage( newValue );
-        console.log( "page ", props.page )
+        //console.log( "page ", props.page )
       }}
       >First</Button>
 
@@ -135,7 +135,7 @@ function TableOfQuestions( props ){
       onClick={ () => { 
         let newValue = props.page-1;
         props.setPage( newValue > -1 ? newValue : props.page );
-        console.log( "page ", props.page )
+        //console.log( "page ", props.page )
       }}
       >Prev</Button>
       Page { props.dataOfQuestions.page.number + 1 } ---   
@@ -146,7 +146,7 @@ function TableOfQuestions( props ){
           let newValue = props.page+1;
           props.setPage( newValue < props.dataOfQuestions.page.totalPages 
               ? newValue : props.page  );
-          console.log( "page ", props.page )
+          //console.log( "page ", props.page )
         }}
           
      >Next</Button>
@@ -155,7 +155,7 @@ function TableOfQuestions( props ){
       onClick={ () => { 
         let newValue = props.dataOfQuestions.page.totalPages -1;
         props.setPage( newValue );
-        console.log( "page ", props.page )
+        //console.log( "page ", props.page )
       }}
       >Last</Button>
      
@@ -286,6 +286,16 @@ function TableOfQuestions( props ){
         updateQuestion = { updateQuestion }
         showQuestionData = { showQuestionData }
         isLoadingShowQuestionsData = { isLoadingShowQuestionsData }
+        sources = { props.sources } 
+              setSources = { props.setSources }
+              isLoadingSources = { props.isLoadingSources }
+              topic = { props.topic }
+              setSelectedSource = { props.setSelectedSource }
+              selectedSource = { props.selectedSource }
+
+              setNewSourceForQuestion = { props.setNewSourceForQuestion }
+              newSourceForQuestion = { props.newSourceForQuestion }
+              
        
         
       />

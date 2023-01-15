@@ -7,7 +7,7 @@ import { SiSpring, SiKubernetes, SiCss3,SiJavascript, SiApachemaven, SiCplusplus
 import { FaAws } from 'react-icons/fa'
 import { FiDatabase } from 'react-icons/fi'
 import { GiComputing } from 'react-icons/gi'
-import { BsDiagram3 } from 'react-icons/bs'
+import { BsDiagram3, BsPlusLg } from 'react-icons/bs'
 import { CgTemplate } from 'react-icons/cg'
 import { AiOutlineConsoleSql } from 'react-icons/ai'
 
@@ -33,12 +33,17 @@ let icon;
 
       return(
         <div className='text-center'>
-          {
+          
+          { 
             props.availableTopics.map((theTopic,index)=>(
               <Button key={index} 
                   variant="outline-dark" 
                   className='mb-3'
-                  onClick={ () => { props.setTopic(theTopic); props.setPage(0) }} >
+                  onClick={ () => { 
+                    props.setPage(0); 
+                    props.setTopic(theTopic); 
+                    
+                    props.setNewSource({...props.newSource, topic:theTopic }) }} >
                       
                       { theTopic === "Java" && < FaJava className='me-3'/> }
                       { theTopic === "React" && < FaReact className='me-3'/> }
@@ -64,7 +69,14 @@ let icon;
           ))
 
           }
-        
+        <Button variant="outline-dark" 
+                  className='mb-3'
+           onClick={ () => { 
+            
+            props.setTopic(""); 
+            
+            }}
+        > NONE </Button>
         </div>
       );
 }
