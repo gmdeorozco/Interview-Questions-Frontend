@@ -257,7 +257,7 @@ function TableOfQuestions( props ){
                             props.setNewSourceForQuestion( question.source ? question.source.id : "");
                            }
                           } className="me-2">
-                        <BsPencil/> xx
+                        <BsPencil/> 
                       </Button>
 
                       <Button variant="secondary"  className="me-2" onClick={ () => handleShowComfirmDelete( question.id )}>
