@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ShowAnswer from './ShowAnswer'
+import { Badge } from 'react-bootstrap';
 
 function TableOfQuestions( props ){
 
@@ -192,7 +193,27 @@ function TableOfQuestions( props ){
                     </InputGroup>
                     }
 
-                    { editingElement !== question.id && <>{question.question} </>}
+                    { 
+                      editingElement !== question.id && question.answer
+                        && <>{
+                        question.question 
+                        } 
+                        </>
+                   
+                    }
+
+                    { 
+                      editingElement !== question.id && !question.answer
+                        && <>{
+                        question.question 
+                        } <Badge bg="danger">
+                        No Answer!!
+                      </Badge>
+                        </>
+                   
+                    }
+
+
                     
                     </td>
 
@@ -307,6 +328,8 @@ function TableOfQuestions( props ){
 
               setNewSourceForQuestion = { props.setNewSourceForQuestion }
               newSourceForQuestion = { props.newSourceForQuestion }
+
+              setPage = { props.setPage }
               
        
         

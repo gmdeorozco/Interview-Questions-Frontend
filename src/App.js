@@ -204,6 +204,8 @@ function App() {
               setNewSourceForQuestion = { setNewSourceForQuestion }
               newSourceForQuestion = { newSourceForQuestion }
               onMain = { true }
+
+              setPage = { setPage }
               
             />
         <Button variant="outline-secondary" id="button-addon2"
@@ -355,6 +357,8 @@ function App() {
               newSourceForQuestion = { newSourceForQuestion }
 
               setNewSource = { setNewSource }
+
+              setPage = { setPage }
             />
 
           <Button variant="secondary" onClick={ handleCloseCreateModal }>

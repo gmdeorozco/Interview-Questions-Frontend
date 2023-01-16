@@ -32,13 +32,14 @@ function SelectSources ( props ) {
     return(
         <InputGroup className="mb-3 mt-3">
         <InputGroup.Text id="basic-addon1"> Source: </InputGroup.Text>
-        <Form.Select size="sm" defaultValue={ props.default }
+        <Form.Select size="sm" value={ props.selectedSource }
             onChange={
                 (e) => { 
 
                     props.onMain ? props.setSelectedSource (e.target.value) 
                         : props.setNewSourceForQuestion( e.target.value );
 
+                    props.setPage(0);
                     console.log( e.target.value );
                 
                 }

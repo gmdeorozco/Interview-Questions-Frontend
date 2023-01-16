@@ -99,6 +99,8 @@ function ShowAnswer ( props ) {
               newSourceForQuestion = { props.newSourceForQuestion }
               setNewSourceForQuestion = { props.setNewSourceForQuestion }
               onMain = { false }
+
+              setPage = { props.setPage }
             />
 
                 <Button variant="danger" onClick={ () => {
