@@ -229,7 +229,7 @@ function TableOfQuestions( props ){
                     
                     </td>
                     <td>
-                      { question.source ? "" : question.source.name }
+                      { question.source ? question.source.name : "" }
                     </td>
 
                   
