@@ -245,7 +245,9 @@ function App() {
           <Col>
             {console.log("page before loading", page)}
             <TableOfQuestions
-              topic={topic}
+              topic = { topic }
+              setTopic = { setTopic }
+
               dataOfQuestions = { dataOfQuestions }
               isLoadingQuestionsData = { isLoadingQuestionsData }
               getDataOfQuestions = { getDataOfQuestions }

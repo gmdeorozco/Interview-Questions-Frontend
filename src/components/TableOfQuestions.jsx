@@ -322,7 +322,10 @@ function TableOfQuestions( props ){
         sources = { props.sources } 
               setSources = { props.setSources }
               isLoadingSources = { props.isLoadingSources }
+              
               topic = { props.topic }
+              setTopic = { props.setTopic }
+
               setSelectedSource = { props.setSelectedSource }
               selectedSource = { props.selectedSource }
 

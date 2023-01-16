@@ -67,10 +67,7 @@ function ShowAnswer ( props ) {
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
           { props.showQuestionData.id }. { props.showQuestionData.question } 
-                          <Button variant="secondary" onClick={ 
-                              () => setEditingElement( props.showQuestionData.id )} className="me-2 ms-3">
-                          <BsPencil/>
-                        </Button>
+              
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -170,6 +167,8 @@ function ShowAnswer ( props ) {
                                   :""
                                   )
                                 setEditingElement( props.showQuestionData.id );
+                                props.setPage ( 0 );
+                                props.setTopic( props.showQuestionData.topic );
                               }} className="me-2 ms-3">
                           <BsPencil/>
                         </Button>

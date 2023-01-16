@@ -38,10 +38,15 @@ function SelectSources ( props ) {
             onChange={
                 (e) => { 
 
-                    props.onMain ? props.setSelectedSource (e.target.value) 
-                        : props.setNewSourceForQuestion( e.target.value );
+                    if( props.onMain ){
+                        props.setSelectedSource (e.target.value); 
+                        props.setPage(0); 
+                    }else{
+                        props.setNewSourceForQuestion( e.target.value );
+                    }
+                        
 
-                    props.setPage(0);
+                    
                     console.log( e.target.value );
                 
                 }
