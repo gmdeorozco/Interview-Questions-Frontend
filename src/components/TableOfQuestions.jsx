@@ -192,7 +192,7 @@ function TableOfQuestions( props ){
                     </InputGroup>
                     }
 
-                    { editingElement!==question.id && <>{question.question} </>}
+                    { editingElement !== question.id && <>{question.question} </>}
                     
                     </td>
 
@@ -236,7 +236,7 @@ function TableOfQuestions( props ){
                     <td> 
                     { editingElement === question.id && 
                       <>
-                      <Button variant="danger" onClick={ () => updateQuestion(question.id, question.question, question.answer, question.topic,question._links.update.href,question._links.self.href )} className="me-2">
+                      <Button variant="danger" onClick={ () => updateQuestion(question.id, question.question, question.answer, question.topic,question._links.update.href,question._links.self.href, props.newSourceForQuestion )} className="me-2">
                         <AiOutlineSave/>
                       </Button>
 
@@ -249,8 +249,15 @@ function TableOfQuestions( props ){
 
                     { editingElement!==question.id && 
                       <>
-                      <Button variant="secondary" onClick={ () => setEditingElement(question.id)} className="me-2">
-                        <BsPencil/>
+                      <Button variant="secondary" 
+                        onClick={
+                           () => {
+                            setEditingElement(question.id);
+                            console.log( question.source );
+                            props.setNewSourceForQuestion( question.source ? question.source.id : "");
+                           }
+                          } className="me-2">
+                        <BsPencil/> xx
                       </Button>
 
                       <Button variant="secondary"  className="me-2" onClick={ () => handleShowComfirmDelete( question.id )}>

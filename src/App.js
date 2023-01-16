@@ -233,6 +233,8 @@ function App() {
               handleShowCreateModal = { handleShowCreateModal }
               setNewSource = { setNewSource }
               newSource = { newSource }
+
+              setSelectedSource = { setSelectedSource }
              
             />
           </Col>
@@ -261,6 +263,8 @@ function App() {
 
               newSourceForQuestion = { newSourceForQuestion }
               setNewSourceForQuestion = { setNewSourceForQuestion }
+
+              
             
              
             />
@@ -316,8 +320,9 @@ function App() {
                 placeholder="Enter coma separated topics"
                 aria-label="topics"
                 aria-describedby="topics"
-                onChange={(e) => setTopic(e.target.value)} 
-                defaultValue = { topic }
+                onChange={(e) => setTopic( e.target.value )} 
+
+                value = { topic }
              />
           </InputGroup>
 
@@ -327,6 +332,9 @@ function App() {
            setTopic = { setTopic }
            setPage = { setPage }
            setSources = { setSources }
+           setSelectedSource = { setSelectedSource }
+
+           setNewSource = { setNewSource }
           />
           
           </Form>
@@ -345,6 +353,8 @@ function App() {
 
               setNewSourceForQuestion = { setNewSourceForQuestion }
               newSourceForQuestion = { newSourceForQuestion }
+
+              setNewSource = { setNewSource }
             />
 
           <Button variant="secondary" onClick={ handleCloseCreateModal }>

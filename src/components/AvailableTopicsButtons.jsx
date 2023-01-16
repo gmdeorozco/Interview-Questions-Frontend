@@ -42,7 +42,7 @@ let icon;
                   onClick={ () => { 
                     props.setPage(0); 
                     props.setTopic(theTopic); 
-                    
+                    props.setSelectedSource( null );
                     props.setNewSource({...props.newSource, topic:theTopic }) }} >
                       
                       { theTopic === "Java" && < FaJava className='me-3'/> }
