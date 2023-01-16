@@ -42,7 +42,7 @@ function CreateSourceModal( props ){
                 aria-label="Topic"
                 aria-describedby="Topic"
                 onChange={ ( e ) => props.setNewSource( {...props.newSource, topic:e.target.value } ) } 
-                defaultValue = { props.topic }
+                value = { props.topic }
              />
           </InputGroup>
 
