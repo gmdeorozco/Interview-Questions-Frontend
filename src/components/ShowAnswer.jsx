@@ -161,7 +161,12 @@ function ShowAnswer ( props ) {
           { props.showQuestionData.id }. { props.showQuestionData.question } 
                           <Button variant="secondary" onClick={ 
                               () => {
-                                setNewAnswer(props.showQuestionData.answer);
+                                setNewAnswer( props.showQuestionData.answer );
+                                props.setNewSourceForQuestion( 
+                                  props.showQuestionData.source ?
+                                  props.showQuestionData.source.id
+                                  :""
+                                  )
                                 setEditingElement( props.showQuestionData.id );
                               }} className="me-2 ms-3">
                           <BsPencil/>
