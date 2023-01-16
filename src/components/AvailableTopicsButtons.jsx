@@ -10,7 +10,7 @@ import { GiComputing } from 'react-icons/gi'
 import { BsDiagram3, BsPlusLg } from 'react-icons/bs'
 import { CgTemplate } from 'react-icons/cg'
 import { AiOutlineConsoleSql } from 'react-icons/ai'
-
+import { DiDocker } from 'react-icons/di'
 
 
 
@@ -67,6 +67,7 @@ function AvailableTopicsButtons( props ){
                       { theTopic === "C++" && <SiCplusplus className='me-3' />}
                       { theTopic === "Templates" && <CgTemplate className='me-3' />}
                       { theTopic === "SQL" && <AiOutlineConsoleSql className='me-3' />}
+                      { theTopic === "Docker" && <DiDocker className = 'me-3' /> }
                         
                       { theTopic } 
                       
