@@ -95,7 +95,17 @@ function TableOfQuestions( props ){
 
 
     //console.log( "carga tabla" )
-    
+    if ( !props.topic ) {
+      return (
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "50vh",
+      }}>Please select a TOPIC </div>
+    );
+    }
 
     if ( props.isLoadingQuestionsData ) {
         return (
@@ -105,12 +115,12 @@ function TableOfQuestions( props ){
           alignItems: "center",
           justifyContent: "center",
           height: "100vh",
-        }}>Loading the data {console.log("loading state")}</div>
+        }}>Loading the data </div>
       );
       }
       
 
-      if ( props.dataOfQuestions.page.totalElements === 0) {
+      if ( props.dataOfQuestions.page.totalElements === 0 ) {
         return (
         <div style={{
           display: "flex",

@@ -40,7 +40,8 @@ let icon;
                   variant="outline-dark" 
                   className='mb-3'
                   onClick={ () => { 
-                    props.setPage(0); 
+                    if(props.onMain)props.setPage(0) ; 
+                    
                     props.setTopic(theTopic); 
                     props.setSelectedSource( "" );
                     props.setNewSource({...props.newSource, topic:theTopic }) }} >

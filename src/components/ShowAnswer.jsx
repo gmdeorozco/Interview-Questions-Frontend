@@ -167,8 +167,8 @@ function ShowAnswer ( props ) {
                                   :""
                                   )
                                 setEditingElement( props.showQuestionData.id );
-                                props.setPage ( 0 );
-                                props.setTopic( props.showQuestionData.topic );
+                                //props.setPage ( 0 );
+                                //props.setTopic( props.showQuestionData.topic );
                               }} className="me-2 ms-3">
                           <BsPencil/>
                         </Button>

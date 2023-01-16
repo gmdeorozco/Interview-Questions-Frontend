@@ -61,7 +61,11 @@ function App() {
 
   const getDataOfQuestions = () => {
 
-
+    if( !topic ){
+      setDataOfQuestions({ page: { totalElements : 0 } });
+     
+      return; 
+    }
     
     let path = server + "/question" + (topic 
         ? "/topic/" + topic+( selectedSource? "/source/"+selectedSource:"")+"?page="+page+"&size="+size
@@ -69,7 +73,7 @@ function App() {
     
     console.log("path", path);
 
-    fetch( path ) // your url may look different
+    fetch( path ) 
       .then(resp => resp.json())
       .then(data => { setDataOfQuestions ( data ); 
   
@@ -78,7 +82,7 @@ function App() {
       }
         
         ) // set data to state
-      console.log("loaded data availableTopics")
+     
   }
 
   const getDataOfSources = () => {
@@ -132,6 +136,7 @@ function App() {
       .then( ( data ) => {
         getDataOfQuestions();  
         getAvailableTopics(); 
+        setPage( dataOfQuestions.page.totalPages - 1);
         
       } 
         
@@ -139,7 +144,7 @@ function App() {
 
       setQuestion("");
       setAnswer("");
-      setTopic("");
+     
   } 
 
   const submitNewSource = () => {
@@ -237,6 +242,7 @@ function App() {
               newSource = { newSource }
 
               setSelectedSource = { setSelectedSource }
+              onMain = { true }
              
             />
           </Col>
