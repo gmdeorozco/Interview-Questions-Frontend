@@ -15,7 +15,7 @@ import AvailableTopicsButtons from './components/AvailableTopicsButtons';
 import addLineSeparators from './logic/addLineSeparators';
 import SelectSources from './components/SelectSources';
 import CreateSourceModal from './components/CreateSourceModal';
-import { ButtonToolbar } from 'react-bootstrap';
+import { ButtonGroup, ButtonToolbar } from 'react-bootstrap';
 
 
 
@@ -35,7 +35,9 @@ function App() {
   const [ isLoadingSources, setLoadingSources ] = useState(true);
   const [ sources, setSources ] = useState({});
   const [ newSource, setNewSource ] = useState({});
+
   const [ selectedSource, setSelectedSource ] = useState();
+  const [ selectedSourceLink, setSelectedSourceLink ] = useState();
 
   
 
@@ -49,6 +51,9 @@ function App() {
     // first data grab
   useEffect(() => {
     getDataOfQuestions();
+    if(selectedSource === "" || topic ===""){
+      setSelectedSourceLink("")
+    }
   }, [ selectedSource, topic, page, size ]);
 
   useEffect(() => {
@@ -198,9 +203,10 @@ function App() {
             <Button variant="primary" 
               onClick={ handleShowCreateModal } className="mb-3 mt-3">
               <BsPlusLg/> 
+             
             </Button>
           </Col> 
-          <Col>
+          <Col >
           <ButtonToolbar>
           <InputGroup className="mb-3">
           <SelectSources
@@ -214,23 +220,27 @@ function App() {
               newSourceForQuestion = { newSourceForQuestion }
               onMain = { true }
 
+              setSelectedSourceLink = { setSelectedSourceLink }
+
               setPage = { setPage }
               
             />
+
+          
+            
         <Button variant="outline-secondary" id="button-addon2"
            onClick={() => handleShowCreateSourceModal()} 
            className="mb-3 mt-3"
         >
            Add new source...
-        </Button>
-      </InputGroup></ButtonToolbar>
+        </Button> 
+        {  selectedSourceLink && <Button className="mb-3 mt-3" variant="outline-secondary" 
+          href={ selectedSourceLink } target="_blank"> Open Source...</Button>}
+          </InputGroup>
 
-          
-          
-            
-
-
-         
+        </ButtonToolbar>
+        
+        
           </Col>
 
         </Row>

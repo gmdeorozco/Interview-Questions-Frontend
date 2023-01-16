@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ShowAnswer from './ShowAnswer'
-import { Badge } from 'react-bootstrap';
+import { Badge, Fade } from 'react-bootstrap';
 
 function TableOfQuestions( props ){
 
@@ -35,6 +35,7 @@ function TableOfQuestions( props ){
   const [ showQuestionLink, setShowQuestionLink ] = useState();
   const [ showQuestionData, setShowQuestionData ] = useState();
   const [ isLoadingShowQuestionsData, setLoadingShowQuestionsData ] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const deleteElement=()=>{
     const requestOptions = {
@@ -132,7 +133,8 @@ function TableOfQuestions( props ){
       );
       }
 
-    return( <>
+    return(   <>
+   
       <div className='text-center mb-4'> 
 
       <Button variant="success" className='me-4'

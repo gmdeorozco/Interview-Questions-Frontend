@@ -4,6 +4,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 function SelectSources ( props ) {
 
+    
+
     let sourceOptions;
 
     if( props.isLoadingSources ){
@@ -15,6 +17,8 @@ function SelectSources ( props ) {
    if( Object.keys( props.sources ).length  === 0 || !props.topic ){
     return(<div></div>)
    }
+
+   
  
     sourceOptions = props.sources._embedded.sourceModelList.map(
         s => <option 
@@ -26,7 +30,18 @@ function SelectSources ( props ) {
         
     )
     
-
+    let theLink;
+    const getLink = ( id ) => {
+    
+        for (let source of props.sources._embedded.sourceModelList ) {
+            console.log( source.id );
+            if (source.id == id ){
+                props.setSelectedSourceLink ( source.sourceLink );
+                break;
+            } 
+          }
+        
+    }
     
 
     return(
@@ -40,14 +55,13 @@ function SelectSources ( props ) {
 
                     if( props.onMain ){
                         props.setSelectedSource (e.target.value); 
+                        getLink( e.target.value ) ;
                         props.setPage(0); 
                     }else{
                         props.setNewSourceForQuestion( e.target.value );
                     }
                         
 
-                    
-                    console.log( e.target.value );
                 
                 }
                 

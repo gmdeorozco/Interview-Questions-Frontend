@@ -44,13 +44,10 @@ function AvailableTopicsButtons( props ){
 
                     props.setTopic(theTopic); 
 
-                    if(!props.onMain && props.topic )
-                    { 
-                      //props.setPage(props.dataOfQuestions.page.totalPages - 1);
-                    } ///
-                    
+                   
                     
                     props.setSelectedSource( "" );
+                    
                     props.setNewSource({...props.newSource, topic:theTopic }) }} >
                       
                       { theTopic === "Java" && < FaJava className='me-3'/> }
