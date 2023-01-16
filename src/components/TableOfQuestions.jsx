@@ -152,9 +152,8 @@ function TableOfQuestions( props ){
         //console.log( "page ", props.page )
       }}
       >Prev</Button>
-      Page { props.dataOfQuestions.page.number + 1 } ---   
-       Total: { props.dataOfQuestions.page.size  }    of { props.dataOfQuestions.page.totalElements } Interview Questions 
-     
+      | Page { props.dataOfQuestions.page.number + 1 }  of  { props.dataOfQuestions.page.totalPages }    |
+           
      <Button variant="success" className='ms-4'
         onClick={ () => { 
           let newValue = props.page+1;
@@ -172,6 +171,9 @@ function TableOfQuestions( props ){
         //console.log( "page ", props.page )
       }}
       >Last</Button>
+
+      <h4 className='mt-4'> From: { props.dataOfQuestions.page.size * (props.dataOfQuestions.page.number+1) - 9  }     to { Math.min( props.dataOfQuestions.page.size * (props.dataOfQuestions.page.number+1),props.dataOfQuestions.page.totalElements)   }  of  { props.dataOfQuestions.page.totalElements } <div className='fs-1'>{ props.topic } Interview Questions  </div> 
+      </h4>
      
       </div>
         <Table striped bordered hover>
