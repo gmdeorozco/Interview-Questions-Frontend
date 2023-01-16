@@ -225,16 +225,16 @@ function TableOfQuestions( props ){
                     </InputGroup>
                     }
 
-                    { editingElement!==question.id && <>{question.topic} </>}
+                    { editingElement !== question.id && <>{ question.topic } </>}
                     
                     </td>
                     <td>
-                      { question.source ? question.source.name : "" }
+                      { question.source ? "" : question.source.name }
                     </td>
 
                   
                     <td> 
-                    { editingElement===question.id && 
+                    { editingElement === question.id && 
                       <>
                       <Button variant="danger" onClick={ () => updateQuestion(question.id, question.question, question.answer, question.topic,question._links.update.href,question._links.self.href )} className="me-2">
                         <AiOutlineSave/>
