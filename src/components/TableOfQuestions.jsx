@@ -77,7 +77,8 @@ function TableOfQuestions( props ){
       body: JSON.stringify( questionEntity )
     };
 
-    fetch( updateLink.replace("http", "https") + ( sourceId ? "/source/" + sourceId :"" )
+    fetch( updateLink.replace("http", "https") 
+      + ( sourceId ? "/source/" + sourceId :"" )
       , requestOptions)
       .then(response => response.json())
       .then(data => { 
@@ -167,6 +168,7 @@ function TableOfQuestions( props ){
                 <th>Question</th>
                 <th>Answer</th>
                 <th>Topic</th>
+                <th>Source</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -225,6 +227,9 @@ function TableOfQuestions( props ){
 
                     { editingElement!==question.id && <>{question.topic} </>}
                     
+                    </td>
+                    <td>
+                      { question.source.name }
                     </td>
 
                   
