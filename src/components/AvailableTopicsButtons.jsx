@@ -17,8 +17,6 @@ import { AiOutlineConsoleSql } from 'react-icons/ai'
 
 function AvailableTopicsButtons( props ){
 
-let icon;
-
 
     if ( props.isLoadingAvailableTopics ) {
         return (
@@ -40,9 +38,18 @@ let icon;
                   variant="outline-dark" 
                   className='mb-3'
                   onClick={ () => { 
-                    if(props.onMain)props.setPage(0) ; 
+                    props.setPage(0);
                     
+                    console.log("page has been set to CERO" + props.page )
+
                     props.setTopic(theTopic); 
+
+                    if(!props.onMain && props.topic )
+                    { 
+                      //props.setPage(props.dataOfQuestions.page.totalPages - 1);
+                    } ///
+                    
+                    
                     props.setSelectedSource( "" );
                     props.setNewSource({...props.newSource, topic:theTopic }) }} >
                       
@@ -75,6 +82,7 @@ let icon;
            onClick={ () => { 
             
             props.setTopic(""); 
+            props.setPage(0);
             
             }}
         > NONE </Button>

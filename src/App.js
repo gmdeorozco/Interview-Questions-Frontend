@@ -163,7 +163,11 @@ function App() {
     fetch( server + '/source/create'
       , requestOptions)
       .then( response => response.json() )
-      .then( data => { getDataOfSources(); setNewSource({})} );
+      .then( data => { getDataOfSources(); 
+        setNewSource({}); 
+        setNewSourceForQuestion( data.id );
+        setSelectedSource( data.id ) 
+      });
 
   }
 
@@ -235,7 +239,10 @@ function App() {
             <AvailableTopicsButtons
               availableTopics = { availableTopics }
               isLoadingAvailableTopics = { isLoadingAvailableTopics }
+
               setTopic = { setTopic }
+              topic = { topic }
+
               setPage = { setPage }
               handleShowCreateModal = { handleShowCreateModal }
               setNewSource = { setNewSource }
@@ -243,6 +250,7 @@ function App() {
 
               setSelectedSource = { setSelectedSource }
               onMain = { true }
+              dataOfQuestions = { dataOfQuestions }
              
             />
           </Col>
@@ -293,6 +301,11 @@ function App() {
         availableTopics ={ availableTopics }
         isLoadingAvailableTopics = { isLoadingAvailableTopics }
         submitNewSource ={ submitNewSource }
+
+        dataOfQuestions = { dataOfQuestions }
+
+        setSelectedSource = { setSelectedSource }
+        page = { page }
      />
 
       <Modal show={ showCreateModal } onHide={ handleCloseCreateModal }>
@@ -339,10 +352,14 @@ function App() {
           <AvailableTopicsButtons
            availableTopics = { availableTopics }
            isLoadingAvailableTopics = { isLoadingAvailableTopics }
+
            setTopic = { setTopic }
+          topic = { topic }
+
            setPage = { setPage }
            setSources = { setSources }
            setSelectedSource = { setSelectedSource }
+           dataOfQuestions = { dataOfQuestions }
 
            setNewSource = { setNewSource }
           />
@@ -357,7 +374,9 @@ function App() {
               isLoadingSources = { isLoadingSources }
               topic = { topic }
               handleShowCreateSourceModal = { handleShowCreateSourceModal } 
+
               setSelectedSource = { setSelectedSource }
+
               selectedSource = { selectedSource }
               onMain = { false }
 
@@ -367,6 +386,8 @@ function App() {
               setNewSource = { setNewSource }
 
               setPage = { setPage }
+
+              
             />
 
           <Button variant="secondary" onClick={ handleCloseCreateModal }>

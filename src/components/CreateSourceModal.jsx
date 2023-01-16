@@ -53,6 +53,13 @@ function CreateSourceModal( props ){
             isLoadingAvailableTopics = { props.isLoadingAvailableTopics }
             newSource = { props.newSource }
             setNewSource = { props.setNewSource }
+            dataOfQuestions = { props.dataOfQuestions }
+
+            topic = { props.topic }
+
+            setSelectedSource = { props.setSelectedSource }
+
+            page = { props.page }
           />
           
           </Form>
