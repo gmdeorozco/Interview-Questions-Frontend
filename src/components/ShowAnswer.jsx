@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
-import Offcanvas from 'react-bootstrap/Offcanvas';
+import { useState } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
-import { AiOutlineDelete } from 'react-icons/ai'
 import { AiOutlineSave } from 'react-icons/ai'
 import Button from 'react-bootstrap/Button';
 import {MdOutlineCancelPresentation} from 'react-icons/md'
@@ -66,7 +64,7 @@ function ShowAnswer ( props ) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-          { props.showQuestionData.id }. { props.showQuestionData.question } 
+          { props.showQuestionData.question } 
               
           </Modal.Title>
         </Modal.Header>
@@ -101,16 +99,27 @@ function ShowAnswer ( props ) {
             />
 
                 <Button variant="danger" onClick={ () => {
+                        
+
                     props.updateQuestion(
                         editingElement, 
                         props.showQuestionData.question, 
-                        addLineSeparators( newAnswer, 60 ), 
+                        props.showQuestionData.answer, 
                         props.showQuestionData.topic,
                         props.showQuestionData._links.update.href,
                         props.showQuestionData._links.self.href,
-                        props.newSourceForQuestion
+                        props.newSourceForQuestion,
+                        props.showQuestionData.question,
+                        addLineSeparators( newAnswer, 60 ),
+                        props.topic,
+                        props.setUpdatedQuestion,
+                        props.getOneQuestionData
                         
                         )
+
+                    
+                        setNewAnswer("");
+                        setEditingElement(-1);
                         
                     setEditingElement(-1);
                     props.setShow( false );
@@ -157,7 +166,7 @@ function ShowAnswer ( props ) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-          { props.showQuestionData.id }. { props.showQuestionData.question } 
+          { props.showQuestionData.question } 
                           <Button variant="secondary" onClick={ 
                               () => {
                                 setNewAnswer( props.showQuestionData.answer );
@@ -193,7 +202,8 @@ function ShowAnswer ( props ) {
           <td> { props.showQuestionData.source.name }</td>
           <td>
             <a href={props.showQuestionData.source.sourceLink } 
-            target="_blank">{ props.showQuestionData.source.sourceLink }
+            target="_blank" rel="noreferrer" >
+              { props.showQuestionData.source.sourceLink }
             </a> </td>
         
         </tr>

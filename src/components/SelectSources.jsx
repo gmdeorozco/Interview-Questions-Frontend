@@ -21,7 +21,7 @@ function SelectSources ( props ) {
    
  
     sourceOptions = props.sources._embedded.sourceModelList.map(
-        s => <option 
+        (s)  => <option 
                 value={ s.id } 
                 key = { s.id } 
                 > 
@@ -30,13 +30,18 @@ function SelectSources ( props ) {
         
     )
     
-    let theLink;
+
     const getLink = ( id ) => {
     
+        if( !id ){
+            props.setSelectedSource( {id:""} );
+            return;
+        }
         for (let source of props.sources._embedded.sourceModelList ) {
-            console.log( source.id );
+            console.log("NAME ", source.name );
             if (source.id == id ){
-                props.setSelectedSourceLink ( source.sourceLink );
+               
+                props.setSelectedSource( source );
                 break;
             } 
           }
@@ -47,14 +52,17 @@ function SelectSources ( props ) {
     return(
         <InputGroup className="mb-3 mt-3">
         <InputGroup.Text id="basic-addon1"> Source: </InputGroup.Text>
-        <Form.Select size="sm" value={ props.onMain 
-            ? props.selectedSource : props.newSourceForQuestion }
+        <Form.Select size="sm" 
+        
+            value={ props.onMain 
+            ? props.selectedSource.id 
+            : props.newSourceForQuestion }
             
             onChange={
                 (e) => { 
 
                     if( props.onMain ){
-                        props.setSelectedSource (e.target.value); 
+                        
                         getLink( e.target.value ) ;
                         props.setPage(0); 
                     }else{
@@ -68,7 +76,9 @@ function SelectSources ( props ) {
                 }
         
         >
-            <option value=""> </option>
+            <option value=""
+            
+            > </option>
            
             { sourceOptions }
             

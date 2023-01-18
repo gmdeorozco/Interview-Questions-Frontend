@@ -1,58 +1,31 @@
-import { BsPencil } from 'react-icons/bs'
-import { AiOutlineDelete } from 'react-icons/ai'
-import { AiOutlineSave } from 'react-icons/ai'
+import { BsPencil, BsPlusLg } from 'react-icons/bs'
+import { AiOutlineDelete, AiOutlineSave } from 'react-icons/ai'
 import {MdOutlineCancelPresentation} from 'react-icons/md'
-import Modal from 'react-bootstrap/Modal';
 
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
 import React, { useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import ShowAnswer from './ShowAnswer'
-import { Badge, Fade } from 'react-bootstrap';
+import { Badge, Table, Button, Form, InputGroup, Modal, Alert } from 'react-bootstrap';
+import { ShowAnswer }  from './'
+import { deleteQuestion, updateQuestion } from '../logic';
 
 function TableOfQuestions( props ){
 
   console.log("entry page", props.page)
 
   const [ editingElement, setEditingElement ] = useState(-1);
-  const [ delitingElement, setDelitingElement ] = useState(-1);
-
+  const [ delitingQuestion, setDelitingElement ] = useState(-1);
   const [newQuestion, setNewQuestion] = useState();
   const [newAnswer, setNewAnswer] = useState();
   const [newTopic, setNewTopic] = useState();
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-
   const handleCloseConfirmDelete = () => setShowConfirmDelete(false);
   const handleShowComfirmDelete = ( id ) => {setShowConfirmDelete(true); setDelitingElement(id)}
-  const [ showAnswer, setShowAnswer ] = useState("");
-  const [ showQuestion, setShowQuestion ] = useState("");
   const [ showShowAnswer, setShowShowAnswer ] = useState( false );
-  const [ showQuestionId, setShowQuestionId ] = useState();
-  const [ showQuestionTopic, setShowQuestionTopic ] = useState();
-  
-  const [ showQuestionLink, setShowQuestionLink ] = useState();
   const [ showQuestionData, setShowQuestionData ] = useState();
   const [ isLoadingShowQuestionsData, setLoadingShowQuestionsData ] = useState(true);
-  const [open, setOpen] = useState(false);
+  
+  
 
-  const deleteElement=()=>{
-    const requestOptions = {
-      method: 'DELETE'
-    }
-     
-    fetch( props.server + "/question/"+delitingElement+"/delete"
-      , requestOptions)
-      .then(response => response.json())
-      .then(data => props.getDataOfQuestions() );
-
-      handleCloseConfirmDelete();
-      setDelitingElement(-1);
-
-    };
-
-    const getShowQuestionData = ( link ) => {
+    const getOneQuestionData = ( link ) => {
       if( link ){
        
         fetch( link.replace("http","https") ) // your url may look different
@@ -62,38 +35,6 @@ function TableOfQuestions( props ){
       }
       
     }
-
-
-  const updateQuestion = ( id, question, answer, topic,updateLink, selfLink, sourceId ) =>{
-    setEditingElement(-1);
-    let questionEntity = {
-      id: id,
-      question : newQuestion ? newQuestion : question,
-      answer : newAnswer ? newAnswer : answer,
-      topic : newTopic ? newTopic : topic
-    };
-
-    const requestOptions = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify( questionEntity )
-    };
-
-    fetch( updateLink.replace("http", "https") 
-      + ( sourceId ? "/source/" + sourceId :"" )
-      , requestOptions)
-      .then(response => response.json())
-      .then(data => { 
-          props.getDataOfQuestions(); 
-          props.getAvailableTopics();
-          getShowQuestionData( selfLink);
-           });
-
-      setNewQuestion("");
-      setNewAnswer("");
-      setNewTopic("");
-  }
-
 
     //console.log( "carga tabla" )
     if ( !props.topic ) {
@@ -121,20 +62,25 @@ function TableOfQuestions( props ){
       }
       
 
-      if ( props.dataOfQuestions.page.totalElements === 0 ) {
+      if ( props.dataOfQuestions.page.totalElements < 1 ) {
         return (
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-        }}>No records found {console.log("no records found")}</div>
+          <>
+          
+
+          <Alert variant="info" className='text-center'>
+          No Records Found!
+        </Alert></>
       );
       }
 
     return(   <>
    
+   
+   
+    
+   
+   
+
       <div className='text-center mb-4'> 
 
       <Button variant="success" className='me-4'
@@ -172,7 +118,11 @@ function TableOfQuestions( props ){
       }}
       >Last</Button>
 
-      <h4 className='mt-4'> From: { props.dataOfQuestions.page.size * (props.dataOfQuestions.page.number+1) - 9  }     to { Math.min( props.dataOfQuestions.page.size * (props.dataOfQuestions.page.number+1),props.dataOfQuestions.page.totalElements)   }  of  { props.dataOfQuestions.page.totalElements } <div className='fs-1'>{ props.topic } Interview Questions  </div> 
+      <h4 className='mt-4'> From: { props.dataOfQuestions.page.size * (props.dataOfQuestions.page.number+1) - 9  }     to { Math.min( props.dataOfQuestions.page.size * (props.dataOfQuestions.page.number+1),props.dataOfQuestions.page.totalElements)   }  of  { props.dataOfQuestions.page.totalElements } 
+      
+      { props.selectedSource.id && <><div className='fs-3'> from { props.selectedSource.name } </div>
+      <div className='fs-5'> at  <a href={ props.selectedSource.sourceLink } target="_blank" rel="noreferrer"> { props.selectedSource.sourceLink } </a> </div></>
+      }
       </h4>
      
       </div>
@@ -191,7 +141,7 @@ function TableOfQuestions( props ){
              { props.dataOfQuestions._embedded.questionModelList.map(
                 (question,index) => (
                 <tr key={index}>
-                    <td> {question.id} </td> 
+                    <td> { (props.dataOfQuestions.page.size *  props.dataOfQuestions.page.number) + index + 1 } </td> 
 
                     <td>  { editingElement===question.id && 
                     
@@ -236,7 +186,7 @@ function TableOfQuestions( props ){
           
                     <Button variant="secondary" onClick={ () => { 
                         setShowShowAnswer(true); 
-                        getShowQuestionData( question._links.self.href )
+                        getOneQuestionData( question._links.self.href )
 
                         }} className="me-2">
                         
@@ -271,7 +221,30 @@ function TableOfQuestions( props ){
                     <td> 
                     { editingElement === question.id && 
                       <>
-                      <Button variant="danger" onClick={ () => updateQuestion(question.id, question.question, question.answer, question.topic,question._links.update.href,question._links.self.href, props.newSourceForQuestion )} className="me-2">
+                      <Button variant="danger" 
+                      onClick={ () =>{
+                        
+                        updateQuestion(
+                          question.id, 
+                          question.question, 
+                          question.answer, 
+                          question.topic,
+                          question._links.update.href,
+                          question._links.self.href, 
+                          props.newSourceForQuestion,
+                          newQuestion,
+                          newAnswer,
+                          newTopic,
+                          props.setUpdatedQuestion,
+                          getOneQuestionData );
+                          
+                        setNewQuestion("");
+                        setNewAnswer("");
+                        setNewTopic("");
+                        setEditingElement(-1);
+
+                      } } className="me-2">
+                        
                         <AiOutlineSave/>
                       </Button>
 
@@ -316,12 +289,20 @@ function TableOfQuestions( props ){
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to DELETE question id : { delitingElement }</Modal.Body>
+        <Modal.Body>Are you sure you want to DELETE question id : { delitingQuestion }</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseConfirmDelete}>
             Close
           </Button>
-          <Button variant="danger" onClick={()=>deleteElement()}>
+          <Button variant="danger" 
+          onClick={()=>{
+              
+              deleteQuestion( props.server, delitingQuestion, props.getDataOfQuestions,handleCloseConfirmDelete, setDelitingElement, props.setDeletedQuestion );
+              
+          
+            }
+          }
+          >
             Save Changes
           </Button>
         </Modal.Footer>
@@ -347,6 +328,8 @@ function TableOfQuestions( props ){
               newSourceForQuestion = { props.newSourceForQuestion }
 
               setPage = { props.setPage }
+              setUpdatedQuestion = { props.setUpdatedQuestion }
+              getOneQuestionData = { getOneQuestionData }
               
        
         

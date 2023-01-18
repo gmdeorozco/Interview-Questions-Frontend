@@ -1,28 +1,15 @@
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import React, { useState } from 'react';
-import InputGroup from 'react-bootstrap/InputGroup';
+
+import React, { useState, useEffect } from 'react';
 import { BsPlusLg } from 'react-icons/bs';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import TableOfQuestions from './components/TableOfQuestions';
-import { useEffect } from 'react';
-import AvailableTopicsButtons from './components/AvailableTopicsButtons';
-import addLineSeparators from './logic/addLineSeparators';
-import SelectSources from './components/SelectSources';
-import CreateSourceModal from './components/CreateSourceModal';
-import { ButtonGroup, ButtonToolbar } from 'react-bootstrap';
-
-
+import { ButtonToolbar, Row, Col, Container, InputGroup, Button } from 'react-bootstrap';
+import { getDataOfSources, getDataOfQuestions, getAvailableTopics } from './logic';
+import { SelectSources, CreateSourceModal, CreateQuestionModal, TableOfQuestions, AvailableTopicsButtons, CreateTopicModal } 
+  from './components';
+import { server } from './logic/constants';
 
 function App() {
   
-  const [showCreateModal, setShowCreateModal] = useState(false);
-
   const [ question, setQuestion ] = useState();
   const [ answer, setAnswer ] = useState("");
   const [ topic, setTopic ] = useState("");
@@ -31,184 +18,100 @@ function App() {
   const [isLoadingAvailableTopics, setLoadingAvailableTopics ] = useState(true);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
-
   const [ isLoadingSources, setLoadingSources ] = useState(true);
   const [ sources, setSources ] = useState({});
   const [ newSource, setNewSource ] = useState({});
-
   const [ selectedSource, setSelectedSource ] = useState();
-  const [ selectedSourceLink, setSelectedSourceLink ] = useState();
-
-  
+  const [ selectedSourceName, setSelectedSourceName ] = useState();
 
   const [ availableTopics, setAvailableTopics ] = useState({})
+  
+  const [ showCreateModal, setShowCreateModal ] = useState(false);
   const [ showCreateSourceModal, setShowCreateSourceModal ] = useState(false);
-
+  
   const [ newSourceForQuestion, setNewSourceForQuestion ] = useState();
+  const [ deletedQuestion, setDeletedQuestion ] = useState();
+  const [ createdQuestion, setCreatedQuestion ] = useState();
+  const [ createdSource, setCreatedSource ] = useState();
+  const [ updatedQuestion, setUpdatedQuestion ] = useState();
+  const [ createdTopic, setCreatedTopic ] = useState();
 
-  const server = 'https://javainterviewquestions-production.up.railway.app/api/v1'
+
+  const [showCreateTopicModal, setShowCreateTopicModal ] = useState(false);
+
+  const handleCloseCreateTopicModal = () => setShowCreateTopicModal(false);
+  const handleShowCreateTopicModal = () => setShowCreateTopicModal(true);
 
     // first data grab
   useEffect(() => {
-    getDataOfQuestions();
-    if(selectedSource === "" || topic ===""){
-      setSelectedSourceLink("")
-    }
-  }, [ selectedSource, topic, page, size ]);
+    getDataOfQuestions( setDataOfQuestions, server, topic, selectedSource, page, size, setLoadingQuestionsData  );
+    
+    
+  }, [ selectedSource, topic, page, size, deletedQuestion, createdQuestion, updatedQuestion ]);
 
   useEffect(() => {
-    getDataOfSources();
-  }, [ topic, page, size ]);
+    getDataOfSources( server, topic, setLoadingSources, setSources );
+    
+  }, [ topic, createdSource ]);
+
+  useEffect(
+    () => {
+      setSelectedSource( {id:""} );
+    }, [ topic ]
+  )
 
   useEffect(() => {
-    getAvailableTopics();
-  }, []);
-
-  const getDataOfQuestions = () => {
-
-    if( !topic ){
-      setDataOfQuestions({ page: { totalElements : 0 } });
-     
-      return; 
-    }
-    
-    let path = server + "/question" + (topic 
-        ? "/topic/" + topic+( selectedSource? "/source/"+selectedSource:"")+"?page="+page+"&size="+size
-        :"/allpaginated"+"?page="+page+"&size="+size);
-    
-    console.log("path", path);
-
-    fetch( path ) 
-      .then(resp => resp.json())
-      .then(data => { setDataOfQuestions ( data ); 
-  
-        setLoadingQuestionsData( false ); 
-        
-      }
-        
-        ) // set data to state
-     
-  }
-
-  const getDataOfSources = () => {
-    
-    
-    let path = server  + "/source"  + ( topic ? "/topic/"  + topic    +"/all"
-      : "/all" );
-    
-    console.log("pathSource", path);
-
-    fetch( path ) // your url may look different
-      .then(resp => resp.json())
-      .then(data => { setSources ( data );  
-        setLoadingSources ( false ); 
-        //console.log(data);
-        }) ;
-  }
-
-  const getAvailableTopics = () =>{
-    fetch( server + "/question/topics")
-    .then(resp => resp.json())
-    .then(data => { setAvailableTopics ( data ); setLoadingAvailableTopics(false)}) // set data to state
-    
-  }
-
-  
-
-  const submitNewQuestion = () => {
-
-    setShowCreateModal(false);
-    let questionEntity = {
-      question : question,
-      answer : addLineSeparators(answer,60),
-      topic : topic
-    };
-   
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify( questionEntity )
-    };
-
-    let path = newSourceForQuestion ? server + '/question/create/onsource/' + newSourceForQuestion
-    : server + '/question/create';
-
-    //console.log( "path to add source at saving ", path)
-    fetch( path
-      , requestOptions)
-      .then(response => response.json())
-      .then( ( data ) => {
-        getDataOfQuestions();  
-        getAvailableTopics(); 
-        setPage( dataOfQuestions.page.totalPages - 1);
-        
-      } 
-        
-       );
-
-      setQuestion("");
-      setAnswer("");
-     
-  } 
-
-  const submitNewSource = () => {
-
-    setShowCreateSourceModal(false);
-    let sourceEntity = { ... newSource }
-   
-    console.log("new Source ", newSource)
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify( sourceEntity )
-    };
-
-    fetch( server + '/source/create'
-      , requestOptions)
-      .then( response => response.json() )
-      .then( data => { getDataOfSources(); 
-        setNewSource({}); 
-        setNewSourceForQuestion( data.id );
-        setSelectedSource( data.id ) 
-      });
-
-  }
+    getAvailableTopics( server, setAvailableTopics, setLoadingAvailableTopics );
+  }, [ createdQuestion, updatedQuestion, createdTopic ]);
 
   const handleShowCreateModal = () => setShowCreateModal(true);
-  const handleCloseCreateModal = () => setShowCreateModal(false);
+  const handleCloseCreateQuestionModal = () => setShowCreateModal(false);
 
-  const handleShowCreateSourceModal = () => { setShowCreateSourceModal(true); }
+  const handleShowCreateSourceModal = () =>  setShowCreateSourceModal(true); 
   const handleCloseCreateSourceModal = () => setShowCreateSourceModal(false);
-
-
-
-
 
   return (
     <>
       <Container lg="6" >
         <Row>
-          <Col> <h1>Interview Questions...</h1> </Col>
+          <Col className='text-center'> 
+            <h1 className='m-5 display-3'>Interview Questions...</h1> 
+          </Col>
         </Row>
-        <Row >
-          <Col lg="1">
-            
-          </Col> 
-         
+      
+        <Row>
+          <Col>
+            <AvailableTopicsButtons
+              availableTopics = { availableTopics }
+              isLoadingAvailableTopics = { isLoadingAvailableTopics }
+              setTopic = { setTopic }
+              topic = { topic }
+              setPage = { setPage }
+              handleShowCreateModal = { handleShowCreateModal }
+              setNewSource = { setNewSource }
+              newSource = { newSource }
+              setSelectedSource = { setSelectedSource }
+              onMain = { true }
+              dataOfQuestions = { dataOfQuestions }
+            />
+          </Col>
         </Row>
         <Row>
-        <Col lg="1">
-            <Button variant="primary" 
-              onClick={ handleShowCreateModal } className="mb-3 mt-3">
-              <BsPlusLg/> 
-             
-            </Button>
-          </Col> 
-          <Col >
+
+
+        </Row>
+        <div className='text-center mt-4 mb-4'>
+              <b className='display-4'>{ topic } </b>
+              
+            { !topic && <p> Select a Topic to add Questions and Sources,<br></br> or create one</p>}
+            </div> 
+        <Row>
+        
+          <Col className='nav justify-content-center' >
+          
+
           <ButtonToolbar>
-          <InputGroup className="mb-3">
+          <InputGroup>
           <SelectSources
               sources = { sources } 
               setSources = { setSources }
@@ -219,59 +122,49 @@ function App() {
               setNewSourceForQuestion = { setNewSourceForQuestion }
               newSourceForQuestion = { newSourceForQuestion }
               onMain = { true }
-
-              setSelectedSourceLink = { setSelectedSourceLink }
-
-              setPage = { setPage }
-              
+              setPage = { setPage }     
+              setSelectedSourceName = { setSelectedSourceName }         
             />
-
-          
+      <Button variant="outline-secondary" id="button-addon2"
+           onClick={() => handleShowCreateTopicModal()} 
+           className="mb-3 mt-3"
+        >
+           Add new Topic...
+        </Button> 
             
-        <Button variant="outline-secondary" id="button-addon2"
+       
+      { topic &&<Button variant="outline-secondary" id="button-addon2"
            onClick={() => handleShowCreateSourceModal()} 
            className="mb-3 mt-3"
         >
            Add new source...
-        </Button> 
-        {  selectedSourceLink && <Button className="mb-3 mt-3" variant="outline-secondary" 
-          href={ selectedSourceLink } target="_blank"> Open Source...</Button>}
-          </InputGroup>
-
-        </ButtonToolbar>
+        </Button> }
+        {  selectedSource && selectedSource.id && <Button className="mb-3 mt-3" variant="outline-secondary" 
+          href={ selectedSource.sourceLink } target="_blank"> Open Source...</Button>}
+          
+          { topic &&<Button variant="outline-secondary" id="button-addon2"
+           onClick={() => handleShowCreateModal()} 
+           className="mb-3 mt-3"
+        >
+           Add new Quesion...
+        </Button> }
+        
+        </InputGroup></ButtonToolbar>
+          
+       
         
         
           </Col>
 
         </Row>
-        <Row>
+
+        <Row className='mt-4'>
           <Col>
-            <AvailableTopicsButtons
-              availableTopics = { availableTopics }
-              isLoadingAvailableTopics = { isLoadingAvailableTopics }
-
-              setTopic = { setTopic }
-              topic = { topic }
-
-              setPage = { setPage }
-              handleShowCreateModal = { handleShowCreateModal }
-              setNewSource = { setNewSource }
-              newSource = { newSource }
-
-              setSelectedSource = { setSelectedSource }
-              onMain = { true }
-              dataOfQuestions = { dataOfQuestions }
-             
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            {console.log("page before loading", page)}
+            
             <TableOfQuestions
+              
               topic = { topic }
               setTopic = { setTopic }
-
               dataOfQuestions = { dataOfQuestions }
               isLoadingQuestionsData = { isLoadingQuestionsData }
               getDataOfQuestions = { getDataOfQuestions }
@@ -282,27 +175,25 @@ function App() {
               setPage = { setPage }
               setSize = { setSize }
               sources = { sources } 
-
               setSources = { setSources }
-              isLoadingSources = { isLoadingSources }
-              
+              isLoadingSources = { isLoadingSources }             
               setSelectedSource = { setSelectedSource }
               selectedSource = { selectedSource }
-
               newSourceForQuestion = { newSourceForQuestion }
               setNewSourceForQuestion = { setNewSourceForQuestion }
-
+              deletedQuestion = { deletedQuestion }
+              setDeletedQuestion = { setDeletedQuestion }  
+              selectedSourceName = { selectedSourceName }
+              setUpdatedQuestion = { setUpdatedQuestion }
+              handleShowCreateModal = { handleShowCreateModal }
               
-            
-             
             />
           </Col>
         </Row>
       </Container>
 
      < CreateSourceModal 
-        showCreateSourceModal = { showCreateSourceModal }
-        handleCloseCreateSourceModal = { handleCloseCreateSourceModal }
+        
         newSource = { newSource }
         setNewSource = { setNewSource }
         setTopic ={ setTopic }
@@ -310,105 +201,49 @@ function App() {
         topic = { topic }
         availableTopics ={ availableTopics }
         isLoadingAvailableTopics = { isLoadingAvailableTopics }
-        submitNewSource ={ submitNewSource }
-
+        showCreateSourceModal = { showCreateSourceModal }
+        setNewSourceForQuestion = { setNewSourceForQuestion }
         dataOfQuestions = { dataOfQuestions }
-
+        setCreatedSource = { setCreatedSource }
         setSelectedSource = { setSelectedSource }
         page = { page }
+        handleShowCreateSourceModal = { handleShowCreateSourceModal }
+        handleCloseCreateSourceModal = { handleCloseCreateSourceModal }
      />
-
-      <Modal show={ showCreateModal } onHide={ handleCloseCreateModal }>
-        <Modal.Header closeButton>
-          <Modal.Title> New Interview Question </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="question"> Question: </InputGroup.Text>
-              <Form.Control
-                placeholder="Question"
-                aria-label="Question"
-                aria-describedby="question"
-                onChange={ ( e ) => setQuestion( e.target.value ) } 
-                defaultValue = { question }
-             />
-          </InputGroup>
-
-
-
-          <InputGroup className="mb-3"> 
-            <InputGroup.Text> Answer: </InputGroup.Text>
-              <Form.Control as="textarea" aria-label="Answer" rows={15}
-                onChange={(e) => setAnswer(e.target.value)} 
-                defaultValue = { answer }
-              />
-            </InputGroup>
-            
-            { answer && <p> { answer.length } of 9000 Characters </p> }
-
-            <InputGroup className="mb-3" size="sm">
-            <InputGroup.Text id="topics"> Topics: </InputGroup.Text>
-              <Form.Control
-                placeholder="Enter coma separated topics"
-                aria-label="topics"
-                aria-describedby="topics"
-                onChange={(e) => setTopic( e.target.value )} 
-
-                value = { topic }
-             />
-          </InputGroup>
-
-          <AvailableTopicsButtons
-           availableTopics = { availableTopics }
-           isLoadingAvailableTopics = { isLoadingAvailableTopics }
-
-           setTopic = { setTopic }
-          topic = { topic }
-
-           setPage = { setPage }
-           setSources = { setSources }
-           setSelectedSource = { setSelectedSource }
-           dataOfQuestions = { dataOfQuestions }
-
-           setNewSource = { setNewSource }
-          />
-          
-          </Form>
-
-        </Modal.Body>
-        <Modal.Footer>
-        <SelectSources
-              sources = { sources } 
-              setSources = { setSources }
-              isLoadingSources = { isLoadingSources }
-              topic = { topic }
-              handleShowCreateSourceModal = { handleShowCreateSourceModal } 
-
-              setSelectedSource = { setSelectedSource }
-
-              selectedSource = { selectedSource }
-              onMain = { false }
-
-              setNewSourceForQuestion = { setNewSourceForQuestion }
-              newSourceForQuestion = { newSourceForQuestion }
-
-              setNewSource = { setNewSource }
-
-              setPage = { setPage }
-
-              
-            />
-
-          <Button variant="secondary" onClick={ handleCloseCreateModal }>
-            Close
-          </Button>
-          <Button variant="primary" onClick={ submitNewQuestion }>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+    <CreateQuestionModal 
+      showCreateModal = { showCreateModal }
+      handleCloseCreateQuestionModal = { handleCloseCreateQuestionModal }
+      question = { question }
+      setQuestion = { setQuestion }
+      answer = { answer }
+      setAnswer = { setAnswer }
+      topic = { topic }
+      availableTopics = { availableTopics }
+      isLoadingAvailableTopics = { isLoadingAvailableTopics }
+      setTopic = { setTopic }
+      setPage = { setPage }
+      setSources = { setSources }
+      setSelectedSource = { setSelectedSource }
+      dataOfQuestions = { dataOfQuestions }
+      setNewSource = { setNewSource }
+      sources = { sources } 
+      isLoadingSources = { isLoadingSources }
+      handleShowCreateSourceModal = { handleShowCreateSourceModal } 
       
+      selectedSource = { selectedSource }
+      onMain = { false }
+      setNewSourceForQuestion = { setNewSourceForQuestion }
+      newSourceForQuestion = { newSourceForQuestion }
+      setCreatedQuestion = { setCreatedQuestion }
+      setSelectedSourceName = { setSelectedSourceName }
+      
+      />
+      <CreateTopicModal 
+        setTopic = { setTopic }
+        handleCloseCreateTopicModal = { handleCloseCreateTopicModal }
+        showCreateTopicModal = { showCreateTopicModal }
+        setCreatedTopic = { setCreatedTopic }
+      />
     </>
   );
 }

@@ -1,11 +1,9 @@
-import { Modal } from "react-bootstrap";
-import { Form, Button } from "react-bootstrap";
-import { InputGroup } from "react-bootstrap";
-import AvailableTopicsButtons from "./AvailableTopicsButtons";
+import { Modal, Form, Button, InputGroup } from "react-bootstrap";
+import { AvailableTopicsButtons } from "./";
+import { createNewSource } from "../logic";
 
 function CreateSourceModal( props ){
 
-   
     return(
         <Modal show={ props.showCreateSourceModal } 
           onHide={ props.handleCloseCreateSourceModal }>
@@ -35,16 +33,8 @@ function CreateSourceModal( props ){
                 defaultValue = { props.newSource.sourceLink }
              />
           </InputGroup>
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="Topic"> Topic: </InputGroup.Text>
-              <Form.Control
-                placeholder="Topic"
-                aria-label="Topic"
-                aria-describedby="Topic"
-                onChange={ ( e ) => props.setNewSource( {...props.newSource, topic:e.target.value } ) } 
-                value = { props.topic }
-             />
-          </InputGroup>
+          
+          <div className="mb-4"> Topic: { props.topic } </div> 
 
           <AvailableTopicsButtons 
             setTopic = { props.setTopic }
@@ -69,7 +59,19 @@ function CreateSourceModal( props ){
           <Button variant="secondary" onClick={ props.handleCloseCreateSourceModal }>
             Close
           </Button>
-          <Button variant="primary" onClick={() => props.submitNewSource()}>
+          <Button variant="primary" 
+            onClick={() => {
+
+              props.setNewSource( {...props.newSource, topic: props.topic } );
+              createNewSource( props.handleCloseCreateSourceModal, 
+                props.setNewSource, 
+                props.newSource, 
+                props.setCreatedSource, 
+                props.setNewSourceForQuestion, 
+                props.setSelectedSource );
+
+            }
+              }>
             Save Changes
           </Button>
         </Modal.Footer>
