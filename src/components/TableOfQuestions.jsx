@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { Badge, Table, Button, Form, InputGroup, Modal, Alert } from 'react-bootstrap';
 import { ShowAnswer }  from './'
 import { deleteQuestion, updateQuestion } from '../logic';
+import { CodeBlock, dracula, androidstudio, codepen } from 'react-code-blocks';
 
 function TableOfQuestions( props ){
 
@@ -158,14 +159,16 @@ function TableOfQuestions( props ){
                     }
 
                     { 
-                      editingElement !== question.id && question.answer
+                      editingElement !== question.id && question.answer 
                         && <>{
                         question.question 
-                        } 
-                        </>
+                        } </>
+
+                        
+                        
                    
                     }
-
+                    
                     { 
                       editingElement !== question.id && !question.answer
                         && <>{
@@ -176,6 +179,13 @@ function TableOfQuestions( props ){
                         </>
                    
                     }
+                    { editingElement !== question.id && question.code_snippet &&
+                        <CodeBlock 
+                          text = { question.code_snippet }
+                          language = { question.topic.toLowerCase() }
+                          showLineNumbers = { true }
+                          theme = { codepen }
+                        /> }
 
 
                     

@@ -8,7 +8,8 @@ import { BsPencil } from 'react-icons/bs'
 import Modal from 'react-bootstrap/Modal';
 import addLineSeparators from '../logic/addLineSeparators';
 import SelectSources from './SelectSources';
-import { Table } from 'react-bootstrap';
+import { Row, Table } from 'react-bootstrap';
+import { CodeBlock, dracula, androidstudio, codepen } from 'react-code-blocks';
 
 function ShowAnswer ( props ) {
 
@@ -181,10 +182,22 @@ function ShowAnswer ( props ) {
                               }} className="me-2 ms-3">
                           <BsPencil/>
                         </Button>
+
+
           </Modal.Title>
+          
+        
         </Modal.Header>
         <Modal.Body>
+        <CodeBlock 
+            text = { props.showQuestionData.code_snippet }
+            language = { props.showQuestionData.topic }
+            showLineNumbers = { true }
+            theme = { codepen }
+          />
           <pre>{ props.showQuestionData.answer } </pre>
+
+         
         </Modal.Body>
         <Modal.Footer>
 
