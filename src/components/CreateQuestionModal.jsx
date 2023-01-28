@@ -6,6 +6,7 @@ import { AvailableTopicsButtons, SelectSources } from "./";
 function CreateQuestionModal( props ){
 
   const [ newTopic, setNewTopic ] = useState();
+  const [ newCodeSnippet, setNewCodeSnippet ] = useState();
 
     return(
         <Modal show={ props.showCreateModal } onHide={ props.handleCloseCreateQuestionModal }>
@@ -15,8 +16,9 @@ function CreateQuestionModal( props ){
         <Modal.Body>
           <Form>
           <InputGroup className="mb-3">
-            <InputGroup.Text id="question"> Question: </InputGroup.Text>
+            <InputGroup.Text id="question" > Question: </InputGroup.Text>
               <Form.Control
+                as="textarea"
                 placeholder="Question"
                 aria-label="Question"
                 aria-describedby="question"
@@ -24,6 +26,18 @@ function CreateQuestionModal( props ){
                 defaultValue = { props.question }
              />
           </InputGroup>
+
+          <InputGroup className="mb-3">
+            <InputGroup.Text id="code_snippet" > Question: </InputGroup.Text>
+              <Form.Control
+                as="textarea"
+                placeholder="code_snippet"
+                aria-label="code_snippet"
+                aria-describedby="code_snippet"
+                onChange={ ( e ) => setNewCodeSnippet( e.target.value ) } 
+                defaultValue = { newCodeSnippet }
+             />
+          </InputGroup>          
 
           <InputGroup className="mb-3"> 
             <InputGroup.Text> Answer: </InputGroup.Text>
@@ -93,7 +107,9 @@ function CreateQuestionModal( props ){
               props.newSourceForQuestion, 
               props.setPage, 
               props.dataOfQuestions, 
-              props.handleCloseCreateQuestionModal ) }>
+              props.handleCloseCreateQuestionModal ,
+              newCodeSnippet
+              ) }>
 
             Save Changes
           </Button>

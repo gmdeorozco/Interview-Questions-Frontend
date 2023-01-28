@@ -1,14 +1,15 @@
 import { server } from "./constants";
 import { addLineSeparators } from "./";
 
-const createNewQuestion = ( question, setQuestion, setCreatedQuestion, answer, setAnswer, topic, newSourceForQuestion, setPage, dataOfQuestions, handleCloseCreateQuestionModal) => {
+const createNewQuestion = ( question, setQuestion, setCreatedQuestion, answer, setAnswer, topic, newSourceForQuestion, setPage, dataOfQuestions, handleCloseCreateQuestionModal, newCodeSnippet) => {
 
     handleCloseCreateQuestionModal();
 
     let questionEntity = {
       question : question,
-      answer : addLineSeparators(answer,60),
-      topic : topic
+      answer : addLineSeparators(answer,50),
+      topic : topic,
+      code_snippet : newCodeSnippet
     };
    
     const requestOptions = {
