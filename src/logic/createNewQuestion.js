@@ -26,7 +26,7 @@ const createNewQuestion = ( question, setQuestion, setCreatedQuestion, answer, s
       .then(response => response.json())
       .then( ( data ) => { 
         setCreatedQuestion( data );
-        setPage( dataOfQuestions.page.totalPages - 1 );  //this will trigger getDataOfQuestions  
+        setPage( dataOfQuestions.page.totalPages ? dataOfQuestions.page.totalPages - 1 : 0 );  //this will trigger getDataOfQuestions  
         
       });
       setQuestion("");
