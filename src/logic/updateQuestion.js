@@ -19,6 +19,8 @@ const updateQuestion = (
       topic : newTopic ? newTopic : topic
     };
 
+    console.log("TO SEND AL SERVER " + questionEntity);
+
     const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },

@@ -222,7 +222,7 @@ function TableOfQuestions( props ){
                     { editingElement === question.id && 
                       <>
                       <Button variant="danger" 
-                      onClick={ () =>{
+                      onClick={ () => {
                         
                         updateQuestion(
                           question.id, 
