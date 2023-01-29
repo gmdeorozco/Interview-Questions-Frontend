@@ -7,6 +7,8 @@ import { Badge, Table, Button, Form, InputGroup, Modal, Alert } from 'react-boot
 import { ShowAnswer }  from './'
 import { deleteQuestion, updateQuestion } from '../logic';
 import { CodeBlock, dracula, androidstudio, codepen } from 'react-code-blocks';
+import { useEffect } from 'react';
+import getMyElo from '../logic/getMyElo';
 
 function TableOfQuestions( props ){
 
@@ -23,8 +25,15 @@ function TableOfQuestions( props ){
   const [ showShowAnswer, setShowShowAnswer ] = useState( false );
   const [ showQuestionData, setShowQuestionData ] = useState();
   const [ isLoadingShowQuestionsData, setLoadingShowQuestionsData ] = useState(true);
+  const [ myElo,setMyElo ] = useState();
+
   
   let newCodeSnippet;
+
+  useEffect(() => {
+    getMyElo( setMyElo )
+  }
+  )
 
     const getOneQuestionData = ( link ) => {
       if( link ){
@@ -127,6 +136,7 @@ function TableOfQuestions( props ){
       </h4>
      
       </div>
+      <h3> My Elo: {myElo} </h3>
         <Table striped bordered hover>
             <thead>
               <tr>
@@ -160,9 +170,13 @@ function TableOfQuestions( props ){
 
                     { 
                       editingElement !== question.id && question.answer 
-                        && <>{
+                        && <>
+                        <div>Elo: { question.elo } Answers: { question.numberOfAnswers }</div>
+                        <b>
+                        {
+                        
                         question.question 
-                        } </>
+                        } </b></>
 
                         
                         
@@ -345,6 +359,8 @@ function TableOfQuestions( props ){
               setPage = { props.setPage }
               setUpdatedQuestion = { props.setUpdatedQuestion }
               getOneQuestionData = { getOneQuestionData }
+
+              setSentEloSubmit = { props.setSentEloSubmit }
               
        
         

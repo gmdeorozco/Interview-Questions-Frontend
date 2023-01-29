@@ -39,6 +39,8 @@ function App() {
 
   const [showCreateTopicModal, setShowCreateTopicModal ] = useState(false);
 
+  const [ sentEloSubmit, setSentEloSubmit ] = useState();
+
   const handleCloseCreateTopicModal = () => setShowCreateTopicModal(false);
   const handleShowCreateTopicModal = () => setShowCreateTopicModal(true);
 
@@ -47,7 +49,7 @@ function App() {
     getDataOfQuestions( setDataOfQuestions, server, topic, selectedSource, page, size, setLoadingQuestionsData  );
     
     
-  }, [ selectedSource, topic, page, size, deletedQuestion, createdQuestion, updatedQuestion ]);
+  }, [ selectedSource, topic, page, size, deletedQuestion, createdQuestion, updatedQuestion,sentEloSubmit ]);
 
   useEffect(() => {
     getDataOfSources( server, topic, setLoadingSources, setSources );
@@ -186,6 +188,7 @@ function App() {
               selectedSourceName = { selectedSourceName }
               setUpdatedQuestion = { setUpdatedQuestion }
               handleShowCreateModal = { handleShowCreateModal }
+              setSentEloSubmit = { setSentEloSubmit }
               
             />
           </Col>

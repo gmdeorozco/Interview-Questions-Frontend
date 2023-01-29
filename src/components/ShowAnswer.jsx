@@ -9,7 +9,10 @@ import Modal from 'react-bootstrap/Modal';
 import addLineSeparators from '../logic/addLineSeparators';
 import SelectSources from './SelectSources';
 import { Row, Table } from 'react-bootstrap';
+import { RiEmotionHappyLine, RiEmotionUnhappyLine  } from 'react-icons/ri'
+import { CiFaceMeh } from 'react-icons/ci'
 import { CodeBlock, dracula, androidstudio, codepen } from 'react-code-blocks';
+import sendAnswerReport from '../logic/sendAnswerReport';
 
 function ShowAnswer ( props ) {
 
@@ -18,6 +21,7 @@ function ShowAnswer ( props ) {
     const [ editingElement, setEditingElement ] = useState();
     const [ newAnswer, setNewAnswer] = useState();
     const [ newCodeSnippet, setNewCodeSnippet ] = useState();
+    const [ reported, setReported ] = useState( false );
    
 
 
@@ -29,7 +33,7 @@ function ShowAnswer ( props ) {
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={ props.show }  
-        onHide={ () => props.setShow( false )}
+        onHide={ () => { props.setShow( false ); setReported(false); setEditingElement(-1); }}
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
@@ -152,6 +156,7 @@ function ShowAnswer ( props ) {
             >
                 <MdOutlineCancelPresentation />
             </Button>
+
         </Modal.Body>
         <Modal.Footer>
 
@@ -184,7 +189,9 @@ function ShowAnswer ( props ) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
+          <div>Elo: { props.showQuestionData.elo } Answers: { props.showQuestionData.numberOfAnswers }</div>
           { props.showQuestionData.question } 
+          
                           <Button variant="secondary" onClick={ 
                               () => {
                                 setNewAnswer( props.showQuestionData.answer );
@@ -215,7 +222,28 @@ function ShowAnswer ( props ) {
           }
           <pre>{ props.showQuestionData.answer } </pre>
 
-         
+          {!reported && <div>
+          <div>Evaluate your answer:</div>
+            <Button variant='success'
+              onClick={ () => {  props.setShow( false ); 
+                sendAnswerReport(1,props.showQuestionData.id,1, props.setSentEloSubmit) } }
+            >
+              <RiEmotionHappyLine />
+            </Button>
+            <Button variant='warning'
+             onClick={ () => {  props.setShow( false );
+              sendAnswerReport(1,props.showQuestionData.id,0, props.setSentEloSubmit)  } }
+            >
+              <CiFaceMeh />
+            </Button>
+            <Button variant='danger'
+              onClick={ () => {  props.setShow( false ); 
+                sendAnswerReport(1,props.showQuestionData.id,2, props.setSentEloSubmit)  } }
+            >
+              <RiEmotionUnhappyLine />
+            </Button>
+            </div>}
+
         </Modal.Body>
         <Modal.Footer>
 
@@ -246,7 +274,8 @@ function ShowAnswer ( props ) {
 
           <Button onClick={() => {
             setEditingElement(-1);
-            props.setShow( false ); 
+            props.setShow( false );
+            setReported(false) ;
             }
             
             }>Close</Button> 
