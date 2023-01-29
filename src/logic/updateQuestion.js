@@ -10,16 +10,26 @@ const updateQuestion = (
   newAnswer, 
   newTopic, 
   setUpdatedQuestion, 
-  getOneQuestionData ) =>{
+  getOneQuestionData, code_snippet, new_code_snippet ) =>{
+
+    newQuestion = newQuestion ? newQuestion : question;
+    newAnswer = newAnswer ? newAnswer : answer;
+    newTopic = newTopic ? newTopic : topic;
+    new_code_snippet = new_code_snippet ? new_code_snippet : code_snippet;
     
     let questionEntity = {
       id: id,
-      question : newQuestion ? newQuestion : question,
-      answer : newAnswer ? newAnswer : answer,
-      topic : newTopic ? newTopic : topic
+      question : newQuestion,
+      answer : newAnswer,
+      topic : newTopic,
+      code_snippet : new_code_snippet 
     };
 
-    console.log("TO SEND AL SERVER " + questionEntity);
+    console.log("TO SEND AL SERVER " + id);
+    console.log("TO SEND AL SERVER " + newQuestion);
+    console.log("TO SEND AL SERVER " + newAnswer);
+    console.log("TO SEND AL SERVER " + newTopic);
+    console.log("to server ", JSON.stringify( questionEntity ));
 
     const requestOptions = {
       method: 'PUT',

@@ -24,7 +24,7 @@ function TableOfQuestions( props ){
   const [ showQuestionData, setShowQuestionData ] = useState();
   const [ isLoadingShowQuestionsData, setLoadingShowQuestionsData ] = useState(true);
   
-  
+  let newCodeSnippet;
 
     const getOneQuestionData = ( link ) => {
       if( link ){
@@ -246,12 +246,17 @@ function TableOfQuestions( props ){
                           newAnswer,
                           newTopic,
                           props.setUpdatedQuestion,
-                          getOneQuestionData );
+                          getOneQuestionData,
+                          question.code_snippet,
+                          newCodeSnippet
+
+                           );
                           
                         setNewQuestion("");
                         setNewAnswer("");
                         setNewTopic("");
                         setEditingElement(-1);
+                        console.log("call it ", question.id)
 
                       } } className="me-2">
                         

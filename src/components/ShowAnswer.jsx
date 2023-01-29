@@ -17,6 +17,7 @@ function ShowAnswer ( props ) {
 
     const [ editingElement, setEditingElement ] = useState();
     const [ newAnswer, setNewAnswer] = useState();
+    const [ newCodeSnippet, setNewCodeSnippet ] = useState();
    
 
 
@@ -71,6 +72,18 @@ function ShowAnswer ( props ) {
         </Modal.Header>
         <Modal.Body>
         <InputGroup className="mb-3">
+                <InputGroup.Text id="code_snippet">@Code Snippet</InputGroup.Text>
+                <Form.Control as="textarea"
+                    placeholder="Code Snippet"
+                    aria-label="Code Snippet"
+                    aria-describedby="code_snippet"
+                    rows={ 15 }
+                    defaultValue={ props.showQuestionData.code_snippet }
+                    onChange = { (e) => setNewCodeSnippet( e.target.value )}
+                />
+                </InputGroup>
+
+        <InputGroup className="mb-3">
                 <InputGroup.Text id="basic-addon1">@answer</InputGroup.Text>
                 <Form.Control as="textarea"
                     placeholder="Answer"
@@ -81,6 +94,7 @@ function ShowAnswer ( props ) {
                     onChange = { (e) => setNewAnswer( e.target.value )}
                 />
                 </InputGroup>
+                
 
                 { newAnswer && <p> { newAnswer.length } of 9000 Characters </p> }
 
@@ -114,7 +128,9 @@ function ShowAnswer ( props ) {
                         addLineSeparators( newAnswer, 60 ),
                         props.topic,
                         props.setUpdatedQuestion,
-                        props.getOneQuestionData
+                        props.getOneQuestionData,
+                        props.showQuestionData.code_snippet,
+                        newCodeSnippet
                         
                         )
 
@@ -124,6 +140,7 @@ function ShowAnswer ( props ) {
                         
                     setEditingElement(-1);
                     props.setShow( false );
+                    setNewCodeSnippet("");
                     //props.setShow( true );
 
                     }} className="me-2">
@@ -189,12 +206,13 @@ function ShowAnswer ( props ) {
         
         </Modal.Header>
         <Modal.Body>
-        <CodeBlock 
+        {  props.showQuestionData.code_snippet && <CodeBlock 
             text = { props.showQuestionData.code_snippet }
             language = { props.showQuestionData.topic }
             showLineNumbers = { true }
             theme = { codepen }
           />
+          }
           <pre>{ props.showQuestionData.answer } </pre>
 
          

@@ -28,7 +28,7 @@ function CreateQuestionModal( props ){
           </InputGroup>
 
           <InputGroup className="mb-3">
-            <InputGroup.Text id="code_snippet" > Question: </InputGroup.Text>
+            <InputGroup.Text id="code_snippet" > Code Snippet: </InputGroup.Text>
               <Form.Control
                 as="textarea"
                 placeholder="code_snippet"
@@ -97,19 +97,27 @@ function CreateQuestionModal( props ){
           </Button>
           <Button variant="primary" 
           onClick={ 
-            () => createNewQuestion( 
-              props.question, 
-              props.setQuestion, 
-              props.setCreatedQuestion, 
-              props.answer, 
-              props.setAnswer, 
-              newTopic ? newTopic : props.topic, 
-              props.newSourceForQuestion, 
-              props.setPage, 
-              props.dataOfQuestions, 
-              props.handleCloseCreateQuestionModal ,
-              newCodeSnippet
-              ) }>
+            () => {
+              createNewQuestion( 
+                props.question, 
+                props.setQuestion, 
+                props.setCreatedQuestion, 
+                props.answer, 
+                props.setAnswer, 
+                newTopic ? newTopic : props.topic, 
+                props.newSourceForQuestion, 
+                props.setPage, 
+                props.dataOfQuestions, 
+                props.handleCloseCreateQuestionModal ,
+                newCodeSnippet
+                );
+              
+                setNewTopic("");
+
+              setNewCodeSnippet("");
+            } }>
+
+                
 
             Save Changes
           </Button>
