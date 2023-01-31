@@ -1,4 +1,4 @@
-import { BsPencil, BsPlusLg } from 'react-icons/bs'
+import { BsPencil, BsLightbulb } from 'react-icons/bs'
 import { AiOutlineDelete, AiOutlineSave } from 'react-icons/ai'
 import {MdOutlineCancelPresentation} from 'react-icons/md'
 
@@ -26,6 +26,7 @@ function TableOfQuestions( props ){
   const [ showQuestionData, setShowQuestionData ] = useState();
   const [ isLoadingShowQuestionsData, setLoadingShowQuestionsData ] = useState(true);
   const [ myElo,setMyElo ] = useState();
+  const [ challengeMe, setChallengeMe] = useState(false);
 
   
   let newCodeSnippet;
@@ -136,7 +137,15 @@ function TableOfQuestions( props ){
       </h4>
      
       </div>
-      <h3> My Elo: {myElo} </h3>
+      <h3> My Elo: {myElo} </h3>  
+      
+      Challenge Me? <Form.Check 
+        type="switch"
+        id="custom-switch"
+        label= { challengeMe ? "YES": "No"}
+        defaultChecked = {false}
+        onClick = {() =>  setChallengeMe( value => !value)}
+      />
         <Table striped bordered hover>
             <thead>
               <tr>
@@ -149,15 +158,22 @@ function TableOfQuestions( props ){
               </tr>
             </thead>
             <tbody>
-             { props.dataOfQuestions._embedded.questionModelList.map(
+                { props.dataOfQuestions._embedded.questionModelList.map(
                 (question,index) => (
                 <tr key={index}>
-                    <td> { (props.dataOfQuestions.page.size *  props.dataOfQuestions.page.number) + index + 1 } </td> 
+                    <td>   {  (challengeMe &&  question.elo >= myElo - 100) 
+                      ? <><Badge bg="success">  <BsLightbulb  className='success'/>   </Badge>  CH  </>            
+                     :""}  
+                     
+                     { (props.dataOfQuestions.page.size *  props.dataOfQuestions.page.number) + index + 1 } </td> 
 
                     <td>  { editingElement===question.id && 
                     
                     <InputGroup className="mb-3">
                       <InputGroup.Text id="basic-addon1">@question</InputGroup.Text>
+
+                      
+
                       <Form.Control
                         placeholder="Question"
                         aria-label="Question"
