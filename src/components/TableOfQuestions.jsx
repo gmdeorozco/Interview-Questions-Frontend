@@ -161,7 +161,7 @@ function TableOfQuestions( props ){
                 { props.dataOfQuestions._embedded.questionModelList.map(
                 (question,index) => (
                 <tr key={index}>
-                    <td>   {  (challengeMe &&  question.elo >= myElo - 100) 
+                    <td>   {  (challengeMe &&  question.elo >= myElo - 200) 
                       ? <><Badge bg="success">  <BsLightbulb  className='success'/>   </Badge>  CH  </>            
                      :""}  
                      
