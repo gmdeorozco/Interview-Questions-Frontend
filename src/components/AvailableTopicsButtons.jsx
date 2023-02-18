@@ -14,6 +14,7 @@ import { DiDocker } from 'react-icons/di'
 import { MdOutlineDevices } from 'react-icons/md'
 import  { TiDeleteOutline } from 'react-icons/ti'
 import { useState } from 'react';
+import { SiMongodb, SiSpringsecurity } from 'react-icons/si'
 
 
 
@@ -72,6 +73,9 @@ function AvailableTopicsButtons( props ){
                       { theTopic === "GitHub" && <AiFillGithub className = 'me-3' /> }
                       { theTopic === "Software Engeenering" && <MdOutlineDevices className = 'me-3' /> }
                       { theTopic === "Spring" && <SiSpring className = 'me-3' /> }
+                      { theTopic === "MongoDB" && <SiMongodb className='me-3' /> }
+                      { theTopic === "Spring Security" && <SiSpringsecurity className='me-3' /> }
+
                       
                       
                       { theTopic } 
