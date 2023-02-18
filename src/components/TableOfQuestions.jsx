@@ -24,9 +24,10 @@ function TableOfQuestions( props ){
   const handleShowComfirmDelete = ( id ) => {setShowConfirmDelete(true); setDelitingElement(id)}
   const [ showShowAnswer, setShowShowAnswer ] = useState( false );
   const [ showQuestionData, setShowQuestionData ] = useState();
-  const [ isLoadingShowQuestionsData, setLoadingShowQuestionsData ] = useState(true);
+  const [ isLoadingShowQuestionsData, setLoadingShowQuestionsData ] = useState( true );
   const [ myElo,setMyElo ] = useState();
-  const [ challengeMe, setChallengeMe] = useState(false);
+  const [ challengeMe, setChallengeMe] = useState( false );
+  const [ challengeMeOffset, setChallengeMeOffset ] = useState( 100 );
 
   
   let newCodeSnippet;
@@ -137,7 +138,7 @@ function TableOfQuestions( props ){
       </h4>
      
       </div>
-      <h3> My Elo: {myElo} </h3>  
+      <h3> My Elo: { myElo } </h3>  
       
       Challenge Me? <Form.Check 
         type="switch"
@@ -146,6 +147,18 @@ function TableOfQuestions( props ){
         defaultChecked = {false}
         onClick = {() =>  setChallengeMe( value => !value)}
       />
+
+      <InputGroup className="mb-3">
+        <InputGroup.Text id="challengeMeOffset"> ChallengeMe Offset: </InputGroup.Text>
+          <Form.Control
+            placeholder="challengeMeOffset"
+            aria-label="challengeMeOffset"
+            aria-describedby="challengeMeOffset"
+            onChange={ ( e ) => setChallengeMeOffset( e.target.value ) } 
+            defaultValue = { challengeMeOffset }
+            />
+        </InputGroup>
+      
         <Table striped bordered hover>
             <thead>
               <tr>
@@ -161,7 +174,7 @@ function TableOfQuestions( props ){
                 { props.dataOfQuestions._embedded.questionModelList.map(
                 (question,index) => (
                 <tr key={index}>
-                    <td>   {  (challengeMe &&  question.elo >= myElo - 300) 
+                    <td>   {  (challengeMe &&  question.elo >= myElo - challengeMeOffset) 
                       ? <><Badge bg="success">  <BsLightbulb  className='success'/>   </Badge>  CH  </>            
                      :""}  
                      
