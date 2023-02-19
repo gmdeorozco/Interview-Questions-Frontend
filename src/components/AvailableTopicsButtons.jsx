@@ -17,7 +17,7 @@ import { useState } from 'react';
 import { SiMongodb, SiSpringsecurity, SiExpress } from 'react-icons/si';
 import { GrTest } from 'react-icons/gr';
 import { RiMoneyDollarCircleLine } from 'react-icons/ri'
-import { IoPizzaOutline } from 'react-icons/io'
+import { TbPizza } from 'react-icons/tb'
 import { SiJunit5, SiPostgresql, SiRedux } from 'react-icons/si'
 
 
@@ -90,7 +90,7 @@ function AvailableTopicsButtons( props ){
                       { theTopic === "Express js" && < SiExpress className='me-3' /> }
                       { theTopic === "Finances" && < RiMoneyDollarCircleLine className='me-3' /> }
                       { theTopic === "Francais" && < GiFrance className='me-3' /> }
-                      { theTopic === "Italiano" && < IoPizzaOutline className='me-3' /> }
+                      { theTopic === "Italiano" && < TbPizza className='me-3' /> }
                       { theTopic === "JUnit" && < SiJunit5 className='me-3' /> }
                       { theTopic === "Node JS" && < FaNodeJs className='me-3' /> }
                       { theTopic === "PostgreDB" && < SiPostgresql className='me-3' /> }
