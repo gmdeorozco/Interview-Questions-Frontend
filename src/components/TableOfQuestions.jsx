@@ -32,10 +32,7 @@ function TableOfQuestions( props ){
   
   let newCodeSnippet;
 
-  useEffect(() => {
-    getMyElo( setMyElo )
-  }
-  )
+  
 
     const getOneQuestionData = ( link ) => {
       if( link ){
@@ -84,6 +81,11 @@ function TableOfQuestions( props ){
         </Alert></>
       );
       }
+
+      useEffect(() => {
+        getMyElo( setMyElo, 1, props.topic )
+      }
+      )
 
     return(   <>
    
