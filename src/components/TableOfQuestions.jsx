@@ -34,7 +34,7 @@ function TableOfQuestions( props ){
 
   useEffect(() => {
     console.log("topic >>>>>>> " + props.topic )
-    getMyElo( setMyElo, 1, props.topic )
+    getMyElo( setMyElo, props.topic )
   }
   )
 
