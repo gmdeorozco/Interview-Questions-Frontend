@@ -68,6 +68,7 @@ function AvailableTopicsButtons( props ){
                       { theTopic === "Javascript" && <SiJavascript  className='me-3'/> }
                       { theTopic === "Maven" && <SiApachemaven className='me-3'/> }
                       { theTopic === "Data Structures" && <FiDatabase className='me-3'/>}
+                      { theTopic === "Data Science" && <FiDatabase className='me-3'/>}
                       { theTopic === "Algorithms" && <GiComputing className='me-3'/> }
                       { theTopic === "UML" && <BsDiagram3 className='me-3'/>}
                       { theTopic === "C++" && <SiCplusplus className='me-3' />}

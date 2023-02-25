@@ -18,6 +18,8 @@ const createNewQuestion = ( question, setQuestion, setCreatedQuestion, answer, s
       body: JSON.stringify( questionEntity )
     };
 
+    console.log( "sending to server >>>  " + requestOptions.body );
+
     let path = newSourceForQuestion ? server + '/question/create/onsource/' + newSourceForQuestion
     : server + '/question/create';
 
