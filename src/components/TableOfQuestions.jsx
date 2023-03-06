@@ -208,7 +208,10 @@ function TableOfQuestions( props ){
                         {
                         
                         question.question 
-                        } </b></>
+                        } </b>
+                        Last Int:
+                        { question.daysFromLastInteraction }  
+                        </>
 
                         
                         
