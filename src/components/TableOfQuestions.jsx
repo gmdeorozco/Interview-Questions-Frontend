@@ -216,7 +216,16 @@ function TableOfQuestions( props ){
                           <>
                             < FaHistory />  { question.lastInteractionDays }
                           </>
+
+
                           }  
+
+                          {
+                            ( question.lastInteractionDays <= 30 ) &&
+                            <>
+                               { question.lastInteractionDays }
+                            </>
+                          }
                        
                         </>
 
