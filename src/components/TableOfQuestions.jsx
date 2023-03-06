@@ -7,6 +7,7 @@ import { Badge, Table, Button, Form, InputGroup, Modal, Alert } from 'react-boot
 import { ShowAnswer }  from './'
 import { deleteQuestion, updateQuestion } from '../logic';
 import { CodeBlock, dracula, androidstudio, codepen } from 'react-code-blocks';
+import { FaHistory } from 'react-icons/fa'
 import { useEffect } from 'react';
 import getMyElo from '../logic/getMyElo';
 
@@ -210,7 +211,12 @@ function TableOfQuestions( props ){
                         question.question 
                         } </b>
                         <br/>
-                        Last Int:  { question.lastInteractionDays }  
+                        Last Int:  { 
+                          ( question.lastInteractionDays === 0 || question.lastInteractionDays > 30 ) &&
+                          <>
+                            <FaHistory/> question.lastInteractionDays
+                          </>
+                          }  
                        
                         </>
 
