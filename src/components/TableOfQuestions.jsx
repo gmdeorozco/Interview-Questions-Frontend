@@ -209,6 +209,7 @@ function TableOfQuestions( props ){
                         
                         question.question 
                         } </b>
+                        <br/>
                         Last Int:  { question.lastInteractionDays }  
                        
                         </>
