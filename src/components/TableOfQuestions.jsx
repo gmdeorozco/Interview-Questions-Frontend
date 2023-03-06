@@ -212,7 +212,7 @@ function TableOfQuestions( props ){
                         } </b>
                         <br/>
                         Last Int:  { 
-                          ( question.lastInteractionDays === 0 || question.lastInteractionDays > 30 ) &&
+                          ( question.lastInteractionDays > 30 ) &&
                           <>
                             < FaHistory />  { question.lastInteractionDays }
                           </>
@@ -221,7 +221,7 @@ function TableOfQuestions( props ){
                           }  
 
                           {
-                            ( question.lastInteractionDays <= 30 && question.lastInteractionDays !== -1 && question.lastInteractionDays !== 0 ) &&
+                            ( question.lastInteractionDays <= 30 && question.lastInteractionDays !== -1  ) &&
                             <>
                                { question.lastInteractionDays }
                             </>
@@ -230,7 +230,7 @@ function TableOfQuestions( props ){
 {
                             ( question.lastInteractionDays === -1 ) &&
                             <>
-                               <i> none </i>
+                               < FaHistory /> <i> none </i>
                             </>
                           }
                        
