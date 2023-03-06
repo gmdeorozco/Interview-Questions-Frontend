@@ -221,7 +221,7 @@ function TableOfQuestions( props ){
                           }  
 
                           {
-                            ( question.lastInteractionDays <= 30 && question.lastInteractionDays !== 0 ) &&
+                            ( question.lastInteractionDays <= 30 && question.lastInteractionDays != 0 ) &&
                             <>
                                { question.lastInteractionDays }
                             </>
