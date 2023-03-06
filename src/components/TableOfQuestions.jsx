@@ -214,7 +214,7 @@ function TableOfQuestions( props ){
                         Last Int:  { 
                           ( question.lastInteractionDays === 0 || question.lastInteractionDays > 30 ) &&
                           <>
-                            <FaHistory/> question.lastInteractionDays
+                            < FaHistory />  { question.lastInteractionDays }
                           </>
                           }  
                        
